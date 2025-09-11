@@ -1,8 +1,8 @@
+#Parte a cargo de Luis Manuel
 
 #Bases de datos de estudiantes, instructores
 estudiantesBaseDatos=[]
 instructoresBaseDatos=[]
-
 
 #---------CLASE DE USUARIOS------------------
 class Usuario:             
@@ -41,7 +41,6 @@ class Instructor(Usuario):
     
 
 juan = Instructor("Juan", 35, 1001, "Licenciado en Matemáticas")
-
 
 julian = Estudiante("Julian", 20, 23421, "Psicología")
 oscar = Estudiante("Oscar", 22, 23422, "Ingeniería")

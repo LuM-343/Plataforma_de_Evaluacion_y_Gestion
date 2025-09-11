@@ -1,6 +1,9 @@
-import clase_usuario #Importar la clase usuario
-cursosBaseDatos=[]
+#Parte realizada por Luis Manuel
 
+import clase_usuario #Importar la clase usuario
+cursosBaseDatos=[]  #Base de Datos de Cursos
+
+# ----Clase Curso------
 class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e instructor, realizar comprobaciones antes de crear instancia!!!
     def __init__(self, nombre, capacidad, codigo, aula, instructor):    #Se utilizan atributos privados
         self.__nombre=nombre
@@ -11,6 +14,7 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         self.__notaTotal=0      #Total de notas subidas en el curso
         self.__estudiantes={}       #Estudiantes incritros
         self.__actividades=[]       #Actividades realizadas
+        cursosBaseDatos.append(self)
     
     def getCodigo(self):        #Obtener codigo unico del curso
         return self.__codigo
