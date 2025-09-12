@@ -33,7 +33,7 @@ class Estudiante(Usuario):
     def __init__(self, nombre, edad, id, correo, carrera):
         super().__init__(nombre, edad, id, correo)
         self.__carrera=carrera
-        estudiantesBaseDatos[self.getId()]=self
+        estudiantesBaseDatos[self.getId()]=self     #Guardamos las instancias creadas en un diccionario para consultas posteriores
 
     def __str__(self):
         return f"{self.getNombre()}, de {self.getEdad()} años, tiene el id: {self.getId()} y estudia {self.__carrera}, contacto al {self.getCorreo()}"
@@ -44,7 +44,7 @@ class Instructor(Usuario):
     def __init__(self, nombre, edad, id, correo, profesion):
         super().__init__(nombre, edad, id, correo)
         self.__profesion=profesion
-        instructoresBaseDatos[self.getId()]=self
+        instructoresBaseDatos[self.getId()]=self    #Guardamos las instancias creadas en un diccionario para consultas posteriores
 
     def __str__(self):
         return f"{self.getNombre()}, de {self.getEdad()} años, tiene el id: {self.getId()} y su profesion es {self.__profesion}, contacto al {self.getCorreo()}"
@@ -53,7 +53,7 @@ class Instructor(Usuario):
         return f"{self.getNombre()}, {self.__profesion}, contacto al {self.getCorreo()}" 
     
 
-juan = Instructor("Juan", 35, 1001, "Juan@correo.com", "Licenciado en Matemáticas")
+juan = Instructor("Juan", 35, 10021, "Juan@correo.com", "Licenciado en Matemáticas")
 
 julian = Estudiante("Julian", 20, 23421,"julian@correo.com", "Psicología")
 oscar = Estudiante("Oscar", 22, 23422,"oscar@correo.com", "Ingeniería")

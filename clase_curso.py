@@ -1,7 +1,7 @@
 #Parte realizada por Luis Manuel
 
 import clase_usuario #Importar la clase usuario
-cursosBaseDatos=[]  #Base de Datos de Cursos
+cursosBaseDatos={}  #Base de Datos de Cursos
 
 # ----Clase Curso------
 class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e instructor, realizar comprobaciones antes de crear instancia!!!
@@ -14,7 +14,7 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         self.__notaTotal=0      #Total de notas subidas en el curso
         self.__estudiantes={}       #Estudiantes incritros
         self.__actividades=[]       #Actividades realizadas
-        cursosBaseDatos.append(self)
+        cursosBaseDatos[self.__codigo]=self
     
     def getCodigo(self):        #Obtener codigo unico del curso
         return self.__codigo
@@ -53,13 +53,13 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
             raise ZeroDivisionError("ERROR, Primero ingresa alguna nota")
         
 
-mate = Curso("Álgebra", 2, "B212", 23123, clase_usuario.juan)
-mate.agregar_estudiante(clase_usuario.julian)  
-mate.agregar_estudiante(clase_usuario.oscar)   
+#mate = Curso("Álgebra", 2, "B212", 23123, clase_usuario.juan)
+#mate.agregar_estudiante(clase_usuario.julian)  
+#mate.agregar_estudiante(clase_usuario.oscar)   
 #mate.agregar_estudiante(julian)  
 #mate.agregar_estudiante(ana)     
 
-mate.infoCurso()
+#mate.infoCurso()
 
-mate.informeGeneral()
+#mate.informeGeneral()
 #mate.reporteBajoRendimiento()
