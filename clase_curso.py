@@ -24,7 +24,7 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         print("Materia:", self.__nombre)
         print("Capacidad del curso:", self.__capacidad)
         print("Aula:", self.__aula)
-        print("Instructor:", self.__instructor.__str__())
+        print("Instructor:", self.__instructor.resumen())
 
     def agregar_estudiante(self, estudiante):   #Metodo para agregar estudiantes
         if len(self.__estudiantes)>= self.__capacidad:      #Comprobar que el curso no este lleno
