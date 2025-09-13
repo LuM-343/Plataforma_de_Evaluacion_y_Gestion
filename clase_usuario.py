@@ -52,7 +52,7 @@ class Instructor(Usuario):
     def resumen(self):
         return f"{self.getNombre()}, {self.__profesion}, contacto al {self.getCorreo()}" 
     
-
+#Instancias de prueba
 juan = Instructor("Juan", 35, 10021, "Juan@correo.com", "Licenciado en Matemáticas")
 
 julian = Estudiante("Julian", 20, 23421,"julian@correo.com", "Psicología")
