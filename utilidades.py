@@ -217,7 +217,7 @@ def eliminarEstudiante(estudiante):    #Para realizar esto ya debe haverse ident
     curso.infoCurso()       #Se muestra un resumen del curso
     opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
     if opcion=='si':
-        curso.eliminarEstudiantes(estudiante)   #Se llama al método para eliminar el estudiante
+        curso.eliminarEstudiante(estudiante)   #Se llama al método para eliminar el estudiante
         print("Eliminado exitosamente")
         return
     else:
@@ -226,15 +226,18 @@ def eliminarEstudiante(estudiante):    #Para realizar esto ya debe haverse ident
     
 def eliminarCurso():
     print("\nBienvenido a la papelera de cursos")
-    resumenCursos()       #Se llama a la función resumen Instructores
-    curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]
-    print("\nSe eliminará el siguiente curso")
-    curso.infoCurso()
-    opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
-    if opcion=='si':
-        del clase_curso.CursoBaseDatos[curso.getCodigo()]
-        print("\nCurso eliminado del sistema 🤖")   #Se elimina el curso de la base de datos
-        return
-    else:
-        print("Saliendo al menu principal")
-        return
+    if len(clase_usuario.estudiantesBaseDatos)>0:
+        resumenCursos()       #Se llama a la función resumen Instructores
+        curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]
+        print("\nSe eliminará el siguiente curso")
+        curso.infoCurso()
+        opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
+        if opcion=='si':
+            del clase_curso.cursosBaseDatos[curso.getCodigo()]
+            print("\nCurso eliminado del sistema 🤖")   #Se elimina el curso de la base de datos
+            return
+        else:
+            print("Saliendo al menu principal")
+            return
+    else: 
+        print("ERROR: Primero debes crear un curso")

@@ -1,178 +1,327 @@
-# función para crear Estudiante
-import clase_usuario
-import clase_curso
+# ==============================
+# CLASE: MENÚS
+# ==============================
+# Importación de módulos para uso de clases dentro de los menús
+import utilidades
+from clase_usuario import estudiantesBaseDatos, instructoresBaseDatos
+from clase_curso import cursosBaseDatos
+from evaluaciones import Examen, Tarea
 
-def comprobar_vacio(texto):     #Función para comprobar que los datos ingresados no esten vacios
-    while texto=="":
-        print("No puedes dejar este espacio en blanco")
-        texto=input("Ingresalo de nuevo: ")
-    return texto
+# Clase base Menus
+# Clase base Menus
+class Menus:
+    # Funciones auxiliares de validación de entrada de datos
+    def pedir_id(self, mensaje):
+        # Pide al usuario un ID numérico sin espacios
+        while True:
+            entrada = input(mensaje).strip()  # Elimina espacios
+            if entrada.isdigit():  # Valida que sean números
+                return entrada
+            print("❌ El ID debe ser numérico y sin espacios.")
 
-def comprobacion_num(tipo):     #Para la comprobación de numeros trabajaremos con funciones anidadas
-    def validar_edad(n):        #Validación de edad
-        if 0 < n < 100:         #La edad debe estar entre 0 y 100
-            return True
-        raise ValueError("La edad debe estar entre 1 y 99")
+    def pedir_nombre(self, mensaje):
+        # Pide al usuario un nombre sin números
+        while True:
+            entrada = input(mensaje).strip().title()
+            if entrada.replace(" ", "").isalpha():  # Letras y espacios permitidos
+                return entrada
+            print("❌ El nombre no debe contener números ni caracteres inválidos.")
 
-    def validar_id(n):          #Validación de id
-        if 10000 <= n <= 99999:         #debe tener 5 digitos
-            if n in clase_usuario.estudiantesBaseDatos or n in clase_usuario.instructoresBaseDatos: #No debe estar entre los usuarios ya creados
-                raise ValueError("Ese ID ya se encuentra en uso")
-            return True
-        raise ValueError("El ID debe tener 5 dígitos")
+    # Menú para Catedrático
+    def menu_catedratico(self, instructor):  # Al iniciar sesión se comparte la instancia del usuario con el método del menu
+        catedratico_id=instructor.getId() #Se define el id del profesor para futuros llamados
+        while True:
+            # Se muestra una lista de opciones únicas para el catedráico 
+            print(f"\n--- Menú Catedrático ({instructor.getNombre()}) ---") # Se muestra el nombre del catedrático dentro del programa
+            print("1. Crear evaluación")
+            print("2. Registrar calificación")
+            print("3. Ver calificaciones")
+            print("4. Reporte promedios bajos")
+            print("0. Salir")
+            op = input("Opción: ") # Selección de opción
 
-    def validar_capacidad(n):   #Validación de capacidad
-        if n > 0:               #Debe ser mayor a 0
-            return True
-        raise ValueError("La capacidad debe ser mayor que 0")
+            if op == "1":    # Crear evaluación
+                # Verifica que existan cursos
+                if not cursosBaseDatos:
+                    print("⚠️ No hay cursos creados aún.")
+                    continue
 
-    def validar_codigo(n):          #Validación de código
-        if 10000 <= n <= 99999:         #Debe tener 5 dígitos
-            if n in clase_curso.cursosBaseDatos:    #No debe repetirse con los curso ya creados
-                raise ValueError("Ese código ya se encuentra en uso")
-            return True
-        raise ValueError("El código debe tener 5 dígitos")
+                # Muestra el listado de cursos disponibles
+                print("\n📘 Cursos disponibles:")
+                for c in cursosBaseDatos.values():
+                    print(f"- {c.getCodigo()} - {c.getNombre()}")
+                codigo = input("Código del curso: ") # Ingresa el código del curso 
+                # Verifca el código del curso 
+                if codigo in cursosBaseDatos:
+                    # Se pide el tipo, nombre y ponderación de la evaluación a crear
+                    tipo = input("Tipo (examen/tarea): ").lower() 
+                    nombre = input("Nombre de la evaluación: ")
+                    # Manejo de errores en entrada tipo float de 'ponderación'
+                    try:
+                        ponderacion = float(input("Ponderación (ej. 0.3): "))
+                    except ValueError:
+                        print("❌ Ponderación inválida. Debe ser un número.")
+                        continue
 
-    def validar_id_instructor(n):       #Validación de id de instructor
-        if 10000 <= n <= 99999 and n in clase_usuario.instructoresBaseDatos:    #Debe tener 5 digitos y estar en la base de instructors
-            return True
-        raise ValueError("ID no válido para instructor")
-    
-    def validar_id_general(n):
-        if 10000 <= n <= 99999 and (n in clase_usuario.instructoresBaseDatos or n in clase_usuario or n==10000):    #Debe tener 5 digitos y estar en la base de instructors
-            return True
-        raise ValueError("ID no no encontrado")
+                    # Se verifica que tipo de evaluación es
+                    if tipo == "examen":
+                        # Si es de tipo 'examen' se pide su atributo específico 
+                        # Manejo de errores en entrada tipo int de 'duración'
+                        try:
+                            duracion = int(input("Duración en minutos: "))
+                        except ValueError:
+                            print("❌ Duración inválida. Debe ser un número entero.")
+                            continue
+                        evaluacion = Examen(nombre, ponderacion, duracion)  # Se crea el objeto para agregar al curso
+                    else:
+                        # Si no, es de tipo 'tarea' y se piden sus atributos específicos 
+                        fecha = input("Fecha de entrega: ")
+                        evaluacion = Tarea(nombre, ponderacion, fecha) # Se crea el objeto para agregar al curso
 
-    def validar_codigo_curso(n):        #Validación de id para codigo de curso
-        if 10000 <= n <= 99999 and n in clase_curso.cursosBaseDatos:    #Debe tener 5 digitos y estar en la bas de datos de curso
-            return True
-        raise ValueError("Código de curso no válido")
+                    # Se agrega al curso con su método 'agregar_evaluacion' por medio del objeto 'evaluacion'
+                    cursosBaseDatos[codigo].agregar_evaluacion(evaluacion)
+                else:
+                    print("❌ Curso no encontrado.")
 
-    validaciones = {        #diccionario, con las funciones anidas y el tipo que se ingresa para después llamarla
-        "edad": validar_edad,
-        "id": validar_id,
-        "capacidad": validar_capacidad,
-        "codigo": validar_codigo,
-        "Id Instructor": validar_id_instructor,
-        "codigo del curso": validar_codigo_curso,
-        "id personal":validar_id_general
-    }
+            elif op == "2":  # Registrar calificación
+                # Se verifica que existan cursos
+                if not cursosBaseDatos:
+                    print("⚠️ No hay cursos creados aún.")
+                    continue
 
-    while True:         
-        try:
-            numero = int(input(f"Ingresa el/la {tipo}: "))  #Se pide el numero
-            if validaciones[tipo](numero):  #Se llama a la validación indicada
-                return numero
-        except ValueError as e:     #Manejo de errores
-            print("ERROR:", e)
-        except KeyError:
-            print("ERROR: Tipo no reconocido")
-            return None
+                # Muestra el listado de cursos disponibles
+                print("\n📘 Cursos disponibles:")
+                for c in cursosBaseDatos.values():
+                    print(f"- {c.getCodigo()} - {c.getNombre()}")
+                codigo = input("Código del curso: ") # Se ingresa el código del curso donde se registrará la calificación
+                
+                # Se valida que exista el curso ingresado
+                if codigo in cursosBaseDatos:
+                    curso = cursosBaseDatos[codigo] # Se asigna el curso en donde se estará trabajando
 
+                    # Valida que existan evaluaciones dentro del curso
+                    if not curso.getEvaluaciones():
+                        print("⚠️ No hay evaluaciones en este curso.")
+                        continue
 
-def comprobacion_correo(correo):    #Función para comprobar correo
-    while correo=="" or ("@" not in correo or ".com" not in correo):    #El correo debe incluir @ .com
-        print("Correo no valido")
-        correo=input("Ingresalo de nuevo: ")
-    return correo
-    
-def crearEstudiante():      #Función para crear una nueva instancia de estudiante
-    print("\n---Ingresa los datos del nuevo estudiante---")     #Se piden los datos
-    nombre=input("Ingresa el nombre: ")         # Y se llaman a las comprobaciones necesarias
-    nombre=comprobar_vacio(nombre)
-    edad=comprobacion_num("edad")
-    print("Recuerda el Id debe ser único y tener 5 dígitos")
-    ident=comprobacion_num("id")
-    correo=input("Ingresa el correo: ")
-    correo=comprobacion_correo(correo)
-    carrera=input("Ingresa la carrera: ")
-    carrera=comprobar_vacio(carrera)
+                    # Enlista los estudiantes disponibles a inscribir con su ID y nombre
+                    print("\n👥 Estudiantes en el curso:")
+                    for e in curso.getEstudiantes().values():
+                        print(f"- {e.id} - {e.nombre}")
+                    est_id = self.pedir_id("ID del estudiante: ") # Se pide el ingreso del ID del estudiante para su nota y lo valida
 
-    print("Gracias por los datos")
-    estudiante=clase_usuario.Estudiante(nombre, edad, ident, correo, carrera)   #Se crea la instancia
-    print(estudiante)       #Se imprime un resumen de la instancia creada
+                    # Valida que exista el estudiante dentro del curso
+                    if est_id not in curso.getEstudiantes():
+                        print("❌ Estudiante no inscrito en el curso.")
+                        continue
 
-def crearInstructor():      #Función para crear una nueva instancia de  instructor
-    print("\n---Ingresa los datos del nuevo instructor---")     #Se piden los datos y se realizan las comprobaciones necesarias
-    nombre=input("Ingresa el nombre: ")
-    nombre=comprobar_vacio(nombre)
-    edad=comprobacion_num("edad")
-    print("Recuerda el Id debe ser único y tener 5 dígitos")
-    ident=comprobacion_num("id")
-    correo=input("Ingresa el correo: ")
-    correo=comprobacion_correo(correo)
-    profesion=input("Ingresa la profesión o especialidad: ")
-    profesion=comprobar_vacio(profesion)
+                    # Enlista las evaluaciones que están dentro del curso
+                    print("\nEvaluaciones disponibles:")
+                    for idx, ev in enumerate(curso.getEvaluaciones(), 1):
+                        print(f"{idx}. {ev.tipo()} {ev.nombre}")
 
-    print("Gracias por los datos")
-    instructor=clase_usuario.Instructor(nombre, edad, ident, correo, profesion) #Se crea la instancia
-    print("Informe de instructor creado")
-    print(instructor)   #Se muestra un resumen de la instancia de instructor creada
+                    # Ingreso del ID de la evaluación y la nota a registrar con manejo de errores en entrada
+                    try:
+                        idx = int(input("Elige evaluación: ")) - 1
+                        nota = float(input("Nota: "))
+                    except ValueError:
+                        print("❌ Entrada inválida. Debe ingresar números.")
+                        continue
 
-def crearCurso():       #Función para crear curso
-    print("\n---Ingresa los datos del curso nuevo---")  #Se piden los datos y se realizan las comprobaciones necesarias
-    nombre=input("Ingresa el nombre del curso: ")
-    nombre=comprobar_vacio(nombre)
-    capacidad=comprobacion_num("capacidad")
-    print("Recuerda el código debe ser único y tener 5 dígitos")
-    codigo=comprobacion_num("codigo")
-    aula=input("Ingresa el aula: ")
-    aula=comprobar_vacio(aula)
-    print("Ahora debes ingresar un instructor, si no lo has creado escribe 'salir' para hacerlo primero u otra tecla para seguir")
-    opcion=input("¿Deseas salir?: ")    #Preguntar si desean continuar o salir
+                    # Validación del rango de opciones de evaluación
+                    if 0 <= idx < len(curso.getEvaluaciones()):
+                        # Se obtiene la lista de evaluaciones del curso
+                        # Se selecciona la evaluación elegida por su índice
+                        # Se llama al método 'asignar_nota' de esa evaluación, registrando la nota del estudiante en esa evaluación específica
+                        curso.getEvaluaciones()[idx].asignar_nota(est_id, nota, curso.getEstudiantes())
+                        print("✅ Nota registrada.")
+                    else:
+                        print("❌ Número de evaluación inválido.")
+                else:
+                    print("❌ Curso no encontrado.")
 
-    if opcion =="salir":    
-        return
-    elif len(clase_usuario.instructoresBaseDatos)==0:       #Comprobar que exista algun Instructor ya
-        raise ValueError ("ERROR: Primero debes crear un instructor")
-    else:
-        print("\nEscribe el id, del instructor a asignar")
-        for clave, valor in clase_usuario.instructoresBaseDatos.items():    #Imprimir todos ls instructores existentes
-            print(f"{clave} - {valor.resumen()}")
-        instructor=comprobacion_num("Id Instructor")      #Comprobar validez de este codigo ingresado
-        
-    print("Gracias por todos los datos")
-    curso=clase_curso.Curso(nombre, capacidad, codigo, aula, clase_usuario.instructoresBaseDatos[instructor])   #Crear instancia de curso
-    print("Resumen del curso creado")
-    curso.infoCurso()   #Imprimir un resumen del curso creado
+            elif op == "3":  # Ver calificaciones
+                # Validar la existencia de cursos
+                if not cursosBaseDatos:
+                    print("⚠️ No hay cursos creados aún.")
+                    continue
 
-def agregar_estudiante(estudiante):             #Para realizar esto ya debe haverse identificado y por eso se pide a estudiantes
-    print("\nBienvenido a la asignación de cursos")
-    if len(clase_curso.cursosBaseDatos)==0:     #Comprobar que ya existan cursos
-        raise TypeError ("ERROR: No existen cursos disponibles")
-    else:
-        for clave, valor in clase_curso.cursosBaseDatos.items():        #Mostrar todos los cursos disponibles
-            print(f"{clave} - {valor.resumen()}")
-        curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")] #Ingreso del curso al que se asignará
-    
-    print("Te asignaras al siguiente curso")        #Mostrar resumen del curso al que se asignará
-    curso.infoCurso()
-    opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Confirmación
-    if opcion=='si':
-        curso.agregarEstudiante(estudiante) #Se llama al método para agregar al estudiante
-        print("Agregado exitosamente")
-        return
-    else:
-        print("Saliendo al menu principal")
-        return
+                # Muestra el listado de cursos disponibles
+                print("\n📘 Cursos disponibles:")
+                for c in cursosBaseDatos.values():
+                    print(f"- {c.getCodigo()} - {c.getNombre()}")
+                codigo = input("Código del curso: ") # Ingreso del código del curso a ver las calificaciones
+                
+                # Verifica existencia del curso
+                if codigo in cursosBaseDatos:
+                    cursosBaseDatos[codigo].mostrar_calificaciones() # Se llama al método 'mostrar_calificaciones' del módulo 'evaluaciones'
+                else:
+                    print("❌ Curso no encontrado.")
 
-def eliminar_estudiante(estudiante):    #Para realizar esto ya debe haverse identificado y por eso se pide a estudiantes
-    print("\nBienvenido a la plataforma de retiro académico")
-    i=0
-    for clave, valor in clase_curso.cursosBaseDatos.items():    #Se recorren todos los cursos existentes
-        if estudiante.getId() in valor.getEstudiantes():    #Se comprueba si el estudiante ya está inscrito en alguno
-            print(f"{clave} - {valor.resumen()}")           
-            i+=1
-    if i==0: raise ValueError ("ERROR: No estás inscrito a ningun curso")   #Si no está inscrito, se lanza error
+            elif op == "4":  # Reporte de promedios bajos
+                # Validar la existencia de cursos
+                if not cursosBaseDatos:
+                    print("⚠️ No hay cursos creados aún.")
+                    continue
 
-    curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]     #Se toma el código del curso a desasignar
-    print("Te retiras del siguiente curso")
-    curso.infoCurso()       #Se muestra un resumen del curso
-    opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
-    if opcion=='si':
-        curso.eliminarEstudiantes(estudiante)   #Se llama al método para eliminar el estudiante
-        print("Eliminado exitosamente")
-        return
-    else:
-        print("Saliendo al menu principal")
-        return
+                # Muestra el listado de cursos disponibles
+                print("\n📘 Cursos disponibles:")
+                for c in cursosBaseDatos.values():
+                    print(f"- {c.getCodigo()} - {c.getNombre()}")
+                codigo = input("Código del curso: ") # Ingreso del código del curso
+                
+                # Verifica existencia del curso
+                if codigo in cursosBaseDatos:
+                    cursosBaseDatos[codigo].reporte_promedios_bajos() # Se llama al método 'reporte_promedios_bajos' del módulo 'evaluaciones'
+                else:
+                    print("❌ Curso no encontrado.")
+
+            elif op == "0": # Opción para finalizar el menú del catedrático
+                break
+            else: # Ingreso de opción fuera de rango de opciones del menú
+                print("❌ Opción inválida.")
+
+    # Menú para Estudiante
+    def menu_estudiante(self, estudiante):  # Al iniciar sesión se comparte la instancia del usuario con el método del menu
+        estudiante_id=estudiante.getId()    #Se define el id del estudiante para futuros llamados
+        while True:
+            # Se muestra una lista de opciones únicas para el estudiante
+            print(f"\n--- Menú Estudiante ({estudiante.getNombre()}) ---") # Se muestra el nombre del estudiante dentro del programa
+            print("1. Asignación de cursos")
+            print("2. Retiro académico")
+            print("3. Ver cursos inscritos")
+            print("4. Ver calificaciones")
+            print("0. Salir")
+            op = input("Opción: ")
+
+            if op=="1": utilidades.agregar_estudiante(estudiante)   #Se llama a la función de agregar estudiante a curso en utilidades
+            elif op=="2": utilidades.eliminarEstudiante(estudiante) #Se llama a la función eliminar estudiante (solo de un curso) en utilidades
+
+            elif op == "3":  # Ver cursos inscritos
+                # Se obtiene todos los cursos en los que un estudiante está inscrito y los guarda en la lista 'cursos_inscritos'
+                cursos_inscritos = [c for c in cursosBaseDatos.values() if estudiante_id in c.getEstudiantes()]
+                # Verifica que el estudiante esté inscrito a cursos
+                if not cursos_inscritos:
+                    print("⚠️ No estás inscrito en ningún curso.")
+                else:
+                    # Se desenglosa los cursos en los cuales está inscrito
+                    print("\n📘 Cursos inscritos:")
+                    for c in cursos_inscritos:
+                        print(f"- {c.getNombre()} - {c.resumen()}")
+
+            elif op == "4":  # Ver calificaciones
+                # Se obtiene todos los cursos en los que un estudiante está inscrito y los guarda en la lista 'cursos_inscritos'
+                cursos_inscritos = [c for c in cursosBaseDatos.values() if estudiante_id in c.getEstudiantes()]
+                # Verifica que el estudiante esté inscrito a cursos
+                if not cursos_inscritos:
+                    print("⚠️ No estás inscrito en ningún curso.")
+                else:
+                    # Recorre los cursos en los cuáles está inscrito el estudiante
+                    for c in cursos_inscritos:
+                        # Calcula el promedio del estudiante del curso 'c' iterado, por medio del método 'promedio_estudiante' del módulo 'clase_curso'
+                        prom = c.promedio_estudiante(estudiante_id)
+                        if not c.getEvaluaciones(): # Verificación de existencia de evaluaciones dentro del curso
+                            print(f"\n📘 {c.getNombre()} - ⚠️  No hay evaluaciones registradas.")
+                        else:
+                            # Mustra el curso y promedio si existe o 'Sin notas' si no existe
+                            print(f"\n📘 {c.getNombre()} - Promedio: {prom if prom else 'Sin notas'}")
+                            # Recorre las evaluaciones y obtiene la nota por medio del método 'obtener_nota' del módulo 'evaluaciones'
+                            for ev in c.getEvaluaciones():
+                                nota = ev.obtener_nota(estudiante_id)
+                                print(f"  {ev.tipo()} {ev.nombre}: {nota if nota else 'Sin nota'}")
+
+            elif op == "0": # Opción para finalizar el menú del estudiante
+                break
+            else: # Ingreso de opción fuera de rango de opciones del menú
+                print("❌ Opción inválida.")
+
+    # Menú para Administrativo
+    def menu_administrativo(self):
+        while True:
+            print(f"\n--- Menú Administrativo ---")     #Se muestra el menu administrativo
+            print("1. Estudiante")
+            print("2. Instructores")
+            print("3. Cursos")
+            print("0. Salir")
+            op = input("Opción: ")  #Se pide opción
+
+            if op == "1":  # Opciones estudiantes
+                print("\nMenú de gestión de estudiantes")  
+                print("1. Agregar estudiante")
+                print("2. Eliminar estudiante de todo el Sistema")
+                print("0. Salir al menu principal")
+                op2=input("Opción: ")   #Se pide opción
+
+                if op2=="1": utilidades.crearEstudiante()  #Se llama a la función en utilidades para crear Estudiante
+                elif op2=="2": utilidades.eliminarEstudianteTotalmente()    #Se llama a la función en utilidades para Eliminar estudiante totalmente
+                else: print("Saliendo al menu principal")
+
+            elif op == "2":  # Opciones Instructores
+                print("\nMenú de gestión de Instructores")
+                print("1. Agregar Instructores")
+                print("2. Resumen de Instructores")
+                print("0. Salir al menu principal")
+                op2=input("Opción: ")   #Se pide opción
+                if op2=="1": utilidades.crearInstructor()       #Se llama a la función de crear instructor en el modulo de utilidades
+                elif op2=="2": utilidades.resumenInstructores()     #Se llama a la función de mostrar instructores en utilidades
+                else: print("Saliendo al menú principal")
+
+            elif op=="3":   #Opciones Curso
+                print("\nMenú de gestión de cursos")
+                print("1. Agregar curso")
+                print("2. Cambiar instructor")
+                print("3. Resumen cursos")
+                print("4. Eliminar curso")
+                print("0. Salir al menu principal")
+                op2=input("Opción: ")   #Se pide opción
+
+                if op2=="1": utilidades.crearCurso()        #Se llama a la función de crear curso en utilidades
+                elif op2=="2": utilidades.cambio_instructor()   #Se llama a la función de cambiar instructor en utilidades
+                elif op2=="3": utilidades.resumenCursos()   #Se llama a la función de resumir curso en utilidades
+                elif op2=="4": utilidades.eliminarCurso()   #Se llama a la función de eliminar curso en utilidades
+                else: print("Saliendo al menú principal")
+            elif op == "0":
+                break
+            else:
+                print("❌ Opción inválida.")
+
+    # Menú Principal
+    def menu_principal(self):
+        acceso='Trafico pesado'
+        while True:
+            # Lista de opciones del menú principal
+            print("\n--- Menú Principal ---")
+            print("1. Iniciar Sesión")
+            print("2. Portal Administrativo")
+            print("0. Salir")
+            op = input("Opción: ") # Ingreso de opción
+            if op == "1":  # Registrar estudiante
+                if len(estudiantesBaseDatos)==0 and len(instructoresBaseDatos)==0:  #Comprobar que ya existas al menos un usuario creado
+                    print("Se ha detectado que el sistema es nuevo")
+                    print("Primero espera que tu organización cree cada usuario")
+                else:
+                    print("\nPara poder ingresar, solamente necesitas tu ID !!")    
+                    id=utilidades.comprobacion_num("id personal")       #Llamar comprobación de id
+                    if id in estudiantesBaseDatos:
+                        self.menu_estudiante(estudiantesBaseDatos[id])  #Identificar si es estudiante o catedrático y llamar al menú correspondiente
+                    elif id in instructoresBaseDatos:
+                        self.menu_catedratico(instructoresBaseDatos[id])
+
+            elif op=="2":       #Ingreso al protal 'administrativo' 
+                print("La contraseña es 'Trafico pesado'") #Para ingresar aquí se necesita una contraseña
+                contra=input("Ingresa la contraseña ultra secreta: ")
+                if contra==acceso:
+                    self.menu_administrativo()      #Se llama al menú administrativo
+                else:
+                    print("❌ Contraseña incorrecta")
+
+            elif op == "0":  # Opción para salir del programa
+                print("👋 Saliendo del sistema...")
+                break
+            else: # Ingreso de opción fuera de rango de opciones del menú
+                print("❌ Opción inválida.")
+
+#Iniciar el menu
+if __name__ == "__main__":
+    m = Menus()
+    m.menu_principal()
