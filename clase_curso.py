@@ -1,6 +1,5 @@
 #Parte realizada por Luis Manuel
-
-import clase_usuario #Importar la clase usuario
+from notas import mostrar_calificaciones, reporte_promedios_bajos
 cursosBaseDatos={}  #Base de Datos de Cursos
 
 # ----Clase Curso------
@@ -16,11 +15,13 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         self.__actividades=[]       #Actividades realizadas
         cursosBaseDatos[self.__codigo]=self
     
-    def getCodigo(self):        #Obtener codigo unico del curso
-        return self.__codigo
-    
-    def getEstudiantes(self):
-        return self.__estudiantes
+    def getCodigo(self): return self.__codigo  #Obtener codigo unico del curso
+    def getEstudiantes(self): return self.__estudiantes
+    def getInstructor(self): return self.__instructor
+
+    def setInstructor(self, instructor):
+        self.__instructor=instructor
+        print("Instructor cambiado con exito")
     
     def resumen(self):
         return f"Curso: {self.__nombre}, con {len(self.__estudiantes)}/{self.__capacidad} estudiantes y se dará en el aula {self.__aula}"
@@ -55,23 +56,21 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         for alumno in self.__estudiantes.values():
             print(f"- {alumno['estudiante'].getNombre()}: {sum(alumno['notas'])}")
 
-    def reporteBajoRendimiento(self):       #metodo para mostrar estudiantes con mal rendimiento
-        if self.__notaTotal>0:        #Comprobar que ya se hayan subido alguna nota
-            print("\nEstudiantes con bajo rendimiento")
-            for alumno in self.__estudiantes.values():
-                if sum(alumno["notas"])/self.__notaTotal <65:      #Comprobar que en porcentaje sea menor a 65 para mostrar
-                    print(f"-{alumno['estudiante'].getNombre()}, con {sum(alumno['notas'])}pts, equivale al {sum(alumno['notas'])/self.__notaTotal*100}% de la nota total")
-        else:
-            raise ZeroDivisionError("ERROR, Primero ingresa alguna nota")
-        
-#Instancias de prueba
-#mate = Curso("Álgebra", 2, "B212", 23123, clase_usuario.juan)
-#mate.agregar_estudiante(clase_usuario.julian)  
-#mate.agregar_estudiante(clase_usuario.oscar)   
-#mate.agregar_estudiante(julian)  
-#mate.agregar_estudiante(ana)     
+    def agregar_evaluacion(self, evaluacion):
+        self.__evaluaciones.append(evaluacion)
+        print(f"✅ Evaluación '{evaluacion.nombre}' agregada en {self.__nombre}")
 
-#mate.infoCurso()
+    def mostrar_calificaciones(self):
+        mostrar_calificaciones(self)
 
-#mate.informeGeneral()
-#mate.reporteBajoRendimiento()
+    def promedio_estudiante(self, estudiante_id):
+        total, peso_total = 0, 0
+        for ev in self.__evaluaciones:
+            nota = ev.obtener_nota(estudiante_id)
+            if nota is not None:
+                total += nota * ev.ponderacion
+                peso_total += ev.ponderacion
+        return total / peso_total if peso_total > 0 else None
+
+    def reporte_promedios_bajos(self, limite=60):
+        reporte_promedios_bajos(self, limite)
