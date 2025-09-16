@@ -159,3 +159,51 @@ class Menus:
                 break
             else: # Ingreso de opción fuera de rango de opciones del menú
                 print("❌ Opción inválida.")
+
+    # Menú para Estudiante
+    def menu_estudiante(self, estudiante_id): # Se pide como parámetro el ID del estudiante a ingresar
+        while True:
+            # Se muestra una lista de opciones únicas para el estudiante
+            print(f"\n--- Menú Estudiante ({estudiantes[estudiante_id].nombre}) ---") # Se muestra el nombre del catedrático dentro del programa
+            print("1. Ver cursos inscritos")
+            print("2. Ver calificaciones")
+            print("0. Salir")
+            op = input("Opción: ") # Ingreso de opción
+
+            if op == "1":  # Ver cursos inscritos
+                # Se obtiene todos los cursos en los que un estudiante está inscrito y los guarda en la lista 'cursos_inscritos'
+                cursos_inscritos = [c for c in cursos.values() if estudiante_id in c.getEstudiantes()]
+                # Verifica que el estudiante esté inscrito a cursos
+                if not cursos_inscritos:
+                    print("⚠️ No estás inscrito en ningún curso.")
+                else:
+                    # Se desenglosa los cursos en los cuales está inscrito
+                    print("\n📘 Cursos inscritos:")
+                    for c in cursos_inscritos:
+                        print(f"- {c.getNombre()} (Catedrático: {c.getCatedratico().nombre})")
+
+            elif op == "2":  # Ver calificaciones
+                # Se obtiene todos los cursos en los que un estudiante está inscrito y los guarda en la lista 'cursos_inscritos'
+                cursos_inscritos = [c for c in cursos.values() if estudiante_id in c.getEstudiantes()]
+                # Verifica que el estudiante esté inscrito a cursos
+                if not cursos_inscritos:
+                    print("⚠️ No estás inscrito en ningún curso.")
+                else:
+                    # Recorre los cursos en los cuáles está inscrito el estudiante
+                    for c in cursos_inscritos:
+                        # Calcula el promedio del estudiante del curso 'c' iterado, por medio del método 'promedio_estudiante' del módulo 'clase_curso'
+                        prom = c.promedio_estudiante(estudiante_id)
+                        if not c.getEvaluaciones(): # Verificación de existencia de evaluaciones dentro del curso
+                            print(f"\n📘 {c.getNombre()} - ⚠️ No hay evaluaciones registradas.")
+                        else:
+                            # Mustra el curso y promedio si existe o 'Sin notas' si no existe
+                            print(f"\n📘 {c.getNombre()} - Promedio: {prom if prom else 'Sin notas'}")
+                            # Recorre las evaluaciones y obtiene la nota por medio del método 'obtener_nota' del módulo 'evaluaciones'
+                            for ev in c.getEvaluaciones():
+                                nota = ev.obtener_nota(estudiante_id)
+                                print(f"  {ev.tipo()} {ev.nombre}: {nota if nota else 'Sin nota'}")
+
+            elif op == "0": # Opción para finalizar el menú del estudiante
+                break
+            else: # Ingreso de opción fuera de rango de opciones del menú
+                print("❌ Opción inválida.")
