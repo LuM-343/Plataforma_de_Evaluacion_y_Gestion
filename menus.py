@@ -170,6 +170,11 @@ class Menus:
                     print("❌ Curso no encontrado.")
 
             elif op == "5":  # Ver calificaciones
+                # Validar la existencia de cursos
+                if not cursos:
+                    print("⚠️ No hay cursos creados aún.")
+                    continue
+
                 # Muestra el listado de cursos disponibles
                 print("\n📘 Cursos disponibles:")
                 for c in cursos.values():
@@ -183,6 +188,11 @@ class Menus:
                     print("❌ Curso no encontrado.")
 
             elif op == "6":  # Reporte de promedios bajos
+                # Validar la existencia de cursos
+                if not cursos:
+                    print("⚠️ No hay cursos creados aún.")
+                    continue
+
                 # Muestra el listado de cursos disponibles
                 print("\n📘 Cursos disponibles:")
                 for c in cursos.values():
