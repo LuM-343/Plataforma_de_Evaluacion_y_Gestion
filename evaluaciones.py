@@ -25,3 +25,14 @@ class Evaluacion:
     def obtener_nota(self, estudiante_id): # Parámetro: ID del estudiante
         datos = self.notas.get(estudiante_id)
         return datos["nota"] if datos else None # Devuelve la nota si existe, o 'None' si no tiene nota asignada
+
+# Subclase para crear evaluaciones tipo Examen (Herencia)
+class Examen(Evaluacion):
+    # Atributo adicional: duración en minutos del examen
+    def __init__(self, nombre, ponderacion, duracion_minutos, **kwargs):
+        super().__init__(nombre, ponderacion, **kwargs)
+        self.duracion_minutos = duracion_minutos
+
+    # Método para redefinir el tipo de evaluación a Examen (Polimorfismo)
+    def tipo(self):
+        return "Examen"
