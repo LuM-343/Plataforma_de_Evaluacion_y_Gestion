@@ -207,3 +207,59 @@ class Menus:
                 break
             else: # Ingreso de opción fuera de rango de opciones del menú
                 print("❌ Opción inválida.")
+
+    # Menú Principal
+    def menu_principal(self):
+        while True:
+            # Lista de opciones del menú principal
+            print("\n--- Menú Principal ---")
+            print("1. Registrar estudiante")
+            print("2. Registrar catedrático")
+            print("3. Ingresar como estudiante")
+            print("4. Ingresar como catedrático")
+            print("0. Salir")
+            op = input("Opción: ") # Ingreso de opción
+
+            if op == "1":  # Registrar estudiante
+                id_est = input("ID del estudiante: ") # Ingreso del ID del estudiante
+                # Manejo de duplicación de ID registrado 
+                if id_est in estudiantes:
+                    print("⚠️ Ya existe un estudiante con ese ID.")
+                    continue
+
+                nombre = input("Nombre del estudiante: ") # Ingreso del nombre del estudiante a registrar
+                estudiantes[id_est] = Estudiante(id_est, nombre) # Se agrega el registro del estudiante al diccionario 'estudiantes' con el objeto del módulo 'clase_usuario'
+                print(f"✅ Estudiante {nombre} registrado.")
+
+            elif op == "2":  # Registrar catedrático
+                id_cat = input("ID del catedrático: ") # Ingreso del ID del catedrático
+                # Manejo de duplicación de ID registrado
+                if id_cat in catedraticos:
+                    print("⚠️ Ya existe un catedrático con ese ID.")
+                    continue
+
+                nombre = input("Nombre del catedrático: ") # Ingreso del nombre del catedrático a registrar
+                catedraticos[id_cat] = Catedratico(id_cat, nombre) # Se agrega el registro del catedrático al diccionario 'catedraticos' con el objeto del módulo 'clase_usuario'
+                print(f"✅ Catedrático {nombre} registrado.")
+
+            elif op == "3":  # Ingresar como estudiante
+                id_est = input("ID del estudiante: ") # Ingreso del ID del estudiante
+                # Verifica el registro del estudiante
+                if id_est in estudiantes:
+                    self.menu_estudiante(id_est) # Se llama al menú para estudiantes
+                else:
+                    print("❌ Estudiante no registrado.")
+
+            elif op == "4":  # Ingresar como catedrático
+                id_cat = input("ID del catedrático: ") # Ingreso del ID del catedrático
+                # Verifica el registro del catedrático
+                if id_cat in catedraticos:
+                    self.menu_catedratico(id_cat) # Se llama al menú para catedráticos
+                else:
+                    print("❌ Catedrático no registrado.")
+
+            elif op == "0":  # Opción para salir del programa
+                print("👋 Saliendo del sistema...")
+                break
+            else: # Ingreso de opción fuera de rango de opciones del menú
+                print("❌ Opción inválida.")
