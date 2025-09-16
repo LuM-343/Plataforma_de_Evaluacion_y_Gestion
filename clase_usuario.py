@@ -37,7 +37,9 @@ class Estudiante(Usuario):
 
     def __str__(self):
         return f"{self.getNombre()}, de {self.getEdad()} años, tiene el id: {self.getId()} y estudia {self.__carrera}, contacto al {self.getCorreo()}"
-
+    
+    def resumen(self):
+        return f"{self.getNombre()}, {self.__carrera}, contacto al {self.getCorreo()}" 
 
 #---------CLASE DE INSTRUCTOR------------------
 class Instructor(Usuario):
@@ -52,11 +54,3 @@ class Instructor(Usuario):
     def resumen(self):
         return f"{self.getNombre()}, {self.__profesion}, contacto al {self.getCorreo()}" 
     
-#Instancias de prueba
-juan = Instructor("Juan", 35, 10021, "Juan@correo.com", "Licenciado en Matemáticas")
-
-julian = Estudiante("Julian", 20, 23421,"julian@correo.com", "Psicología")
-oscar = Estudiante("Oscar", 22, 23422,"oscar@correo.com", "Ingeniería")
-ana = Estudiante("Ana", 21, 23423, "ana@correo.com","Filosofía") 
-
-

@@ -12,12 +12,14 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         self.__instructor=instructor
         self.__notaTotal=0      #Total de notas subidas en el curso
         self.__estudiantes={}       #Estudiantes incritros
-        self.__actividades=[]       #Actividades realizadas
+        self.__evaluaciones = []        #Actividades realizadas
         cursosBaseDatos[self.__codigo]=self
     
     def getCodigo(self): return self.__codigo  #Obtener codigo unico del curso
     def getEstudiantes(self): return self.__estudiantes
     def getInstructor(self): return self.__instructor
+    def getEvaluaciones(self): return self.__evaluaciones
+    def getNombre(self): return self.__nombre
 
     def setInstructor(self, instructor):
         self.__instructor=instructor
@@ -35,10 +37,10 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
 
     def agregarEstudiante(self, estudiante):   #Metodo para agregar estudiantes
         if len(self.__estudiantes)>= self.__capacidad:      #Comprobar que el curso no este lleno
-            raise ValueError("ERROR, El curso llegó a su capacidad máxima, pide que abran otra sección")
+            print("ERROR: El curso llegó a su capacidad máxima, pide que abran otra sección")
         
         if estudiante.getId() in self.__estudiantes:  #Comprobar que el estudiante no este inscrito ya
-            raise ValueError ("ERROR, El estudiante ya se encuentra inscrito en el curso")
+            print("ERROR: El estudiante ya se encuentra inscrito en el curso")
 
         self.__estudiantes[estudiante.getId()] = {"estudiante": estudiante, "notas": []} # Aquí se guardarán las notas de las evaluaciones}
         print("Estudiante agregado")  
@@ -48,7 +50,7 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
             del self.__estudiantes[estudiante.getId()]
             print("Estudiante eliminado")
         else:
-            raise ValueError ("ERROR: El estudiante no se encuentra inscrito a este curso")
+            print ("ERROR: El estudiante no se encuentra inscrito a este curso")
 
     def informeGeneral(self):           #Informe de notas de todos los estudiantes
         print("\n----- Informe General de Notas -----")

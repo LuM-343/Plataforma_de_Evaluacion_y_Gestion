@@ -176,12 +176,3 @@ def eliminar_estudiante(estudiante):    #Para realizar esto ya debe haverse iden
     else:
         print("Saliendo al menu principal")
         return
-
-"""def inicioSesion():
-    print("\n Para poder ingresar primero inicia sesión, solamente necesitas tu ID")
-    id=comprobacion_num()
-    if id==10000:
-        return 0
-    elif id in clase_usuario.estudiantesBaseDatos:
-        return 1, clase_usuario.estudiantesBaseDatos[id]
-    elif"""
