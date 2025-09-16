@@ -14,6 +14,23 @@ catedraticos = {}
 
 # Clase base Menus
 class Menus:
+    # Funciones auxiliares de validación de entrada de datos
+    def pedir_id(self, mensaje):
+        # Pide al usuario un ID numérico sin espacios
+        while True:
+            entrada = input(mensaje).strip()  # Elimina espacios
+            if entrada.isdigit():  # Valida que sean números
+                return entrada
+            print("❌ El ID debe ser numérico y sin espacios.")
+
+    def pedir_nombre(self, mensaje):
+        # Pide al usuario un nombre sin números
+        while True:
+            entrada = input(mensaje).strip().title()
+            if entrada.replace(" ", "").isalpha():  # Letras y espacios permitidos
+                return entrada
+            print("❌ El nombre no debe contener números ni caracteres inválidos.")
+
     # Menú para Catedrático
     def menu_catedratico(self, catedratico_id): # Se pide como parámetro el ID del catedrático
         while True:
@@ -59,7 +76,7 @@ class Menus:
                     print("\n👥 Estudiantes disponibles:")
                     for e in estudiantes.values():
                         print(f"- {e.id} - {e.nombre}")
-                    est_id = input("ID del estudiante: ") # Pide el ingreso del ID del estudiante a inscribir
+                    est_id = self.pedir_id("ID del estudiante: ") # Pide el ingreso del ID del estudiante a inscribir y lo valida
 
                     # Se valida el ID del estudiante y se agrega al curso po
                     if est_id in estudiantes:
@@ -137,7 +154,7 @@ class Menus:
                     print("\n👥 Estudiantes en el curso:")
                     for e in curso.getEstudiantes().values():
                         print(f"- {e.id} - {e.nombre}")
-                    est_id = input("ID del estudiante: ") # Se pide el ingreso del ID del estudiante para su nota
+                    est_id = self.pedir_id("ID del estudiante: ") # Se pide el ingreso del ID del estudiante para su nota y lo valida
 
                     # Valida que exista el estudiante dentro del curso
                     if est_id not in curso.getEstudiantes():
@@ -271,29 +288,29 @@ class Menus:
             op = input("Opción: ") # Ingreso de opción
 
             if op == "1":  # Registrar estudiante
-                id_est = input("ID del estudiante: ") # Ingreso del ID del estudiante
+                id_est = self.pedir_id("ID del estudiante: ") # Ingreso del ID del estudiante validándolo
                 # Manejo de duplicación de ID registrado 
                 if id_est in estudiantes:
                     print("⚠️ Ya existe un estudiante con ese ID.")
                     continue
 
-                nombre = input("Nombre del estudiante: ") # Ingreso del nombre del estudiante a registrar
+                nombre = self.pedir_nombre("Nombre del estudiante: ").title() # Ingreso del nombre del estudiante a registrar y validándolo
                 estudiantes[id_est] = Estudiante(id_est, nombre) # Se agrega el registro del estudiante al diccionario 'estudiantes' con el objeto del módulo 'clase_usuario'
                 print(f"✅ Estudiante {nombre} registrado.")
 
             elif op == "2":  # Registrar catedrático
-                id_cat = input("ID del catedrático: ") # Ingreso del ID del catedrático
+                id_cat = self.pedir_id("ID del catedrático: ") # Ingreso del ID del catedrático y validándolo
                 # Manejo de duplicación de ID registrado
                 if id_cat in catedraticos:
                     print("⚠️ Ya existe un catedrático con ese ID.")
                     continue
 
-                nombre = input("Nombre del catedrático: ") # Ingreso del nombre del catedrático a registrar
+                nombre = self.pedir_nombre("Nombre del catedrático: ").title() # Ingreso del nombre del catedrático a registrar y validándolo
                 catedraticos[id_cat] = Catedratico(id_cat, nombre) # Se agrega el registro del catedrático al diccionario 'catedraticos' con el objeto del módulo 'clase_usuario'
                 print(f"✅ Catedrático {nombre} registrado.")
 
             elif op == "3":  # Ingresar como estudiante
-                id_est = input("ID del estudiante: ") # Ingreso del ID del estudiante
+                id_est = self.pedir_id("ID del estudiante: ") # Ingreso del ID del estudiante y validándolo
                 # Verifica el registro del estudiante
                 if id_est in estudiantes:
                     self.menu_estudiante(id_est) # Se llama al menú para estudiantes
@@ -301,7 +318,7 @@ class Menus:
                     print("❌ Estudiante no registrado.")
 
             elif op == "4":  # Ingresar como catedrático
-                id_cat = input("ID del catedrático: ") # Ingreso del ID del catedrático
+                id_cat = self.pedir_id("ID del catedrático: ") # Ingreso del ID del catedrático y validándolo
                 # Verifica el registro del catedrático
                 if id_cat in catedraticos:
                     self.menu_catedratico(id_cat) # Se llama al menú para catedráticos
