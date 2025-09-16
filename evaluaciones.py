@@ -36,3 +36,14 @@ class Examen(Evaluacion):
     # Método para redefinir el tipo de evaluación a Examen (Polimorfismo)
     def tipo(self):
         return "Examen"
+    
+# Subclase para crear evaluaciones tipo Tarea (Herencia)
+class Tarea(Evaluacion):
+    # Atributo adicional: fecha de entrega de la tarea
+    def __init__(self, nombre, ponderacion, fecha_entrega, **kwargs):
+        super().__init__(nombre, ponderacion, **kwargs)
+        self.fecha_entrega = fecha_entrega
+
+    # Método para redefinir el tipo de evaluación a Tarea (Polimorfismo)
+    def tipo(self):
+        return "Tarea"
