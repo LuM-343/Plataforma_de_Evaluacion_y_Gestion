@@ -316,6 +316,8 @@ class Menus:
                     print("❌ Contraseña incorrecta")
 
             elif op == "0":  # Opción para salir del programa
+                print("📥 Guardando los datos")
+                utilidades.guardar_datos() #Función para guardar los datos modificados en la sesión
                 print("👋 Saliendo del sistema...")
                 break
             else: # Ingreso de opción fuera de rango de opciones del menú
@@ -324,4 +326,5 @@ class Menus:
 #Iniciar el menu
 if __name__ == "__main__":
     m = Menus()
+    utilidades.cargarDatos() #Función para cargar datos ya guardados
     m.menu_principal()

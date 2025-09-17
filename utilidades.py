@@ -1,3 +1,6 @@
+import pickle   #Importación de pickle, módulo para la persistencia de datos guardando directamente los diccionarios sin necesidad
+#serializar los datos, mucho más sencillo para nuestro caso ya que no se debe exportar ningun dato
+
 # función para crear Estudiante
 import clase_usuario
 import clase_curso
@@ -241,3 +244,38 @@ def eliminarCurso():
             return
     else: 
         print("ERROR: Primero debes crear un curso")
+
+def guardar_datos():
+    with open("estudiantes.pkl", "wb") as f:    #Guardar el diccionario "estudiantesBaseDatos" en un archivo .pkl para no perder datos
+        pickle.dump(clase_usuario.estudiantesBaseDatos, f)
+    with open("instructores.pkl", "wb") as f:    #Guardar el diccionario "instructoresBaseDatos" en un archivo .pkl para no perder datos
+        pickle.dump(clase_usuario.instructoresBaseDatos, f)
+    with open("cursos.pkl", "wb") as f:          #Guardar el diccionario "cursosBaseDatos" en un archivo .pkl para no perder datos
+        pickle.dump(clase_curso.cursosBaseDatos, f)
+
+def cargarDatos():
+    print("📤 Cargando datos del sistema.")
+
+    # Cargar estudiantes
+    try:
+        with open("estudiantes.pkl", "rb") as f:    #Tratar de abrir el archivo
+            clase_usuario.estudiantesBaseDatos = pickle.load(f) #Importar los datos del archivo al diccionario de estudiantes
+        print(f"✅ Estudiantes cargados: {len(clase_usuario.estudiantesBaseDatos)}")
+    except FileNotFoundError:       #Manejo de erro si no se encuentra el archivo
+        print("No existen datos guardados para estudiantes")
+
+    # Cargar instructores
+    try:
+        with open("instructores.pkl", "rb") as f:
+            clase_usuario.instructoresBaseDatos = pickle.load(f) #Importar los datos del archivo al diccionario de instructores
+        print(f"✅ Instructores cargados: {len(clase_usuario.instructoresBaseDatos)}")
+    except FileNotFoundError:   #Manejo de erro si no se encuentra el archivo
+        print("No existen datos guardados para instructores")
+
+    # Cargar cursos
+    try:
+        with open("cursos.pkl", "rb") as f:
+            clase_curso.cursosBaseDatos = pickle.load(f) #Importar los datos del archivo al diccionario de cursos
+        print(f"✅ Cursos cargados: {len(clase_curso.cursosBaseDatos)}")
+    except FileNotFoundError:   #Manejo de erro si no se encuentra el archivo
+        print("No existen datos guardados para cursos")
