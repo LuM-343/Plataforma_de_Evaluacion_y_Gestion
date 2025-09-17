@@ -12,7 +12,7 @@ class Menus:
         while True:
             entrada = input(mensaje).strip()  # Elimina espacios
             if entrada.isdigit():  # Valida que sean números
-                return entrada
+                return int(entrada)
             print("❌ El ID debe ser numérico y sin espacios.")
 
     # Menú para Catedrático
@@ -37,6 +37,11 @@ class Menus:
                     print("❌ No existen cursos.")
                     continue
 
+                # Validación de ponderación
+                if curso.getZona() >= 1:
+                    print('\nLa poderación ya está completa')
+                    continue
+
                 print('\n📄 Evaluaciones')
                 # Se pide el tipo, nombre y ponderación de la evaluación a crear
                 tipo = input("1.Examen \n2.Tarea \nTipo: ")
@@ -44,13 +49,19 @@ class Menus:
                     print("❌ Opción inválida.")
                     continue
 
-                nombre = input("Nombre de la evaluación: ")
+                nombre = input("Nombre de la actividad: ")
 
                 # Manejo de errores en entrada tipo float de 'ponderación'
                 try:
                     ponderacion = float(input("Ponderación (ej. 0.3): "))
+                    # Suma de la ponderación para su control
+                    total = curso.getZona() + ponderacion
+                    if 0 < ponderacion <= 1 and total <= 1:
+                        curso.setZona(ponderacion)
+                    else:
+                        raise ValueError 
                 except ValueError:
-                    print("❌ Ponderación inválida. Debe ser un número.")
+                    print("❌ Ponderación inválida. Debe ser un número que no supere zona (100%).")
                     continue
 
                 # Se verifica que tipo de evaluación es
@@ -88,7 +99,7 @@ class Menus:
                 # Enlista los estudiantes disponibles a inscribir con su ID y nombre
                 print("\n👥 Estudiantes en el curso:")
                 for e in curso.getEstudiantes().values():
-                    print(f"- {e.id} - {e.nombre}")
+                    print(f"- {e.getId()} - {e.resumen()}")
 
                 est_id = self.pedir_id("ID del estudiante: ") # Se pide el ingreso del ID del estudiante para su nota y lo valida
 

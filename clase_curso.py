@@ -13,12 +13,16 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         self.__estudiantes={}       #Estudiantes incritros
         self.__evaluaciones = []        #Actividades realizadas
         cursosBaseDatos[self.__codigo]=self
+        self.__zona = 0 # Atributo para controlar el máximo de ponderación de evaluaciones
     
     def getCodigo(self): return self.__codigo  #Obtener codigo unico del curso
     def getEstudiantes(self): return self.__estudiantes
     def getInstructor(self): return self.__instructor
     def getEvaluaciones(self): return self.__evaluaciones
     def getNombre(self): return self.__nombre
+    def getZona(self): return self.__zona
+
+    def setZona(self, ponderacion): self.__zona += ponderacion
 
     def setInstructor(self, instructor):
         self.__instructor=instructor

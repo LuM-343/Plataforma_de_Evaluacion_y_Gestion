@@ -20,7 +20,7 @@ def mostrar_calificaciones(curso): # Se toma como parámetro al curso
             # Muestra las notas de cada estudiante por la evaluación
             for id_est, est in curso.getEstudiantes().items():
                 nota = ev.obtener_nota(id_est)
-                print(f"    {est.nombre}: {nota if nota is not None else 'Sin nota'}") # Muestra la nota si existe, o 'Sin nota' si no se le asignó
+                print(f"    {est.getId()}-{est.getNombre()}: {nota if nota is not None else 'Sin nota'}") # Muestra la nota si existe, o 'Sin nota' si no se le asignó
 
 # Función para crear reportes para estudiantes con promedio bajos
 def reporte_promedios_bajos(curso, limite=60): # Compara el límite de 60 puntos en las notas de 'curso'

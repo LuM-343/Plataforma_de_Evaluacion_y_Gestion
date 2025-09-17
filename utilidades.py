@@ -117,14 +117,14 @@ def cursosInstructores(instructor):
 
 def crearEstudiante():      #Función para crear una nueva instancia de estudiante
     print("\n---Ingresa los datos del nuevo estudiante---")     #Se piden los datos
-    nombre=input("Ingresa el nombre: ")         # Y se llaman a las comprobaciones necesarias
+    nombre=input("Ingresa el nombre: ").title().strip()         # Y se llaman a las comprobaciones necesarias
     nombre=comprobar_vacio(nombre)
     edad=comprobacion_num("edad")
     print("Recuerda el Id debe ser único y tener 5 dígitos")
     ident=comprobacion_num("id")
-    correo=input("Ingresa el correo: ")
+    correo=input("Ingresa el correo: ").strip()
     correo=comprobacion_correo(correo)
-    carrera=input("Ingresa la carrera: ")
+    carrera=input("Ingresa la carrera: ").title()
     carrera=comprobar_vacio(carrera)
 
     print("Gracias por los datos")
@@ -158,14 +158,14 @@ def eliminarEstudianteTotalmente():    #Para realizar esto ya debe haverse ident
 
 def crearInstructor():      #Función para crear una nueva instancia de  instructor
     print("\n---Ingresa los datos del nuevo instructor---")     #Se piden los datos y se realizan las comprobaciones necesarias
-    nombre=input("Ingresa el nombre: ")
+    nombre=input("Ingresa el nombre: ").title().strip()
     nombre=comprobar_vacio(nombre)
     edad=comprobacion_num("edad")
     print("Recuerda el Id debe ser único y tener 5 dígitos")
     ident=comprobacion_num("id")
-    correo=input("Ingresa el correo: ")
+    correo=input("Ingresa el correo: ").strip()
     correo=comprobacion_correo(correo)
-    profesion=input("Ingresa la profesión o especialidad: ")
+    profesion=input("Ingresa la profesión o especialidad: ").title()
     profesion=comprobar_vacio(profesion)
 
     print("Gracias por los datos")
@@ -215,7 +215,7 @@ def agregar_estudiante(estudiante):             #Para realizar esto ya debe have
     
     print("Te asignaras al siguiente curso")        #Mostrar resumen del curso al que se asignará
     curso.infoCurso()
-    opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Confirmación
+    opcion=input("Escribe 'si' para confirmarlo u otra tecla para salir: ")       #Confirmación
     if opcion=='si':
         curso.agregarEstudiante(estudiante) #Se llama al método para agregar al estudiante
         print("Agregado exitosamente")
