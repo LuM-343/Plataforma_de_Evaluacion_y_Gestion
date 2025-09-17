@@ -103,6 +103,7 @@ def resumenInstructores():  #Función para mostrar todos los instructores existe
     
 def cursosInstructores(instructor):
     i=0
+    print("\n📘 Tus cursos:")
     for clave, valor in clase_curso.cursosBaseDatos.items():        #Mostrar todos los cursos disponibles
         if valor.getInstructor().getId() == instructor.getId():                 #Comprobar que el instructor es el mismo
             print(f"{clave} - {valor.resumen()}")

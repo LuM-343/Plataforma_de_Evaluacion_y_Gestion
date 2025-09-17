@@ -30,140 +30,97 @@ class Menus:
             op = input("Opción: ") # Selección de opción
 
             if op == "1":    # Crear evaluación
-                # Verifica que existan cursos
-                if not cursosBaseDatos:
-                    print("⚠️ No hay cursos creados aún.")
+                # Se llama a la función dentro de utilidades para mostrar los cursos del instructor y se verifica
+                curso = utilidades.cursosInstructores(instructor)
+                if not curso:
                     continue
 
-                # Muestra el listado de cursos disponibles
-                print("\n📘 Cursos disponibles:")
-                for c in cursosBaseDatos.values():
-                    print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = utilidades.comprobacion_num("codigo del curso") # Ingresa el código del curso 
-                # Verifca el código del curso 
-                if codigo in cursosBaseDatos:
-                    # Se pide el tipo, nombre y ponderación de la evaluación a crear
-                    tipo = input("Tipo (examen/tarea): ").lower() 
-                    nombre = input("Nombre de la evaluación: ")
-                    # Manejo de errores en entrada tipo float de 'ponderación'
+                # Se pide el tipo, nombre y ponderación de la evaluación a crear
+                tipo = input("Tipo (examen/tarea): ").lower() 
+                nombre = input("Nombre de la evaluación: ")
+
+                # Manejo de errores en entrada tipo float de 'ponderación'
+                try:
+                    ponderacion = float(input("Ponderación (ej. 0.3): "))
+                except ValueError:
+                    print("❌ Ponderación inválida. Debe ser un número.")
+                    continue
+
+                # Se verifica que tipo de evaluación es
+                if tipo == "examen":
+                    # Si es de tipo 'examen' se pide su atributo específico 
+                    # Manejo de errores en entrada tipo int de 'duración'
                     try:
-                        ponderacion = float(input("Ponderación (ej. 0.3): "))
+                        duracion = int(input("Duración en minutos: "))
                     except ValueError:
-                        print("❌ Ponderación inválida. Debe ser un número.")
+                        print("❌ Duración inválida. Debe ser un número entero.")
                         continue
-
-                    # Se verifica que tipo de evaluación es
-                    if tipo == "examen":
-                        # Si es de tipo 'examen' se pide su atributo específico 
-                        # Manejo de errores en entrada tipo int de 'duración'
-                        try:
-                            duracion = int(input("Duración en minutos: "))
-                        except ValueError:
-                            print("❌ Duración inválida. Debe ser un número entero.")
-                            continue
-                        evaluacion = Examen(nombre, ponderacion, duracion)  # Se crea el objeto para agregar al curso
-                    else:
-                        # Si no, es de tipo 'tarea' y se piden sus atributos específicos 
-                        fecha = input("Fecha de entrega: ")
-                        evaluacion = Tarea(nombre, ponderacion, fecha) # Se crea el objeto para agregar al curso
-
-                    # Se agrega al curso con su método 'agregar_evaluacion' por medio del objeto 'evaluacion'
-                    cursosBaseDatos[codigo].agregar_evaluacion(evaluacion)
+                    evaluacion = Examen(nombre, ponderacion, duracion) # Se crea el objeto para agregar al curso
                 else:
-                    print("❌ Curso no encontrado.")
+                    # Si no, es de tipo 'tarea' y se piden sus atributos específicos
+                    fecha = input("Fecha de entrega: ")
+                    evaluacion = Tarea(nombre, ponderacion, fecha) # Se crea el objeto para agregar al curso
+                
+                # Se agrega al curso con su método 'agregar_evaluacion' por medio del objeto 'evaluacion'
+                curso.agregar_evaluacion(evaluacion)
 
             elif op == "2":  # Registrar calificación
-                # Se verifica que existan cursos
-                if not cursosBaseDatos:
-                    print("⚠️ No hay cursos creados aún.")
+                # Se llama a la función dentro de utilidades para mostrar los cursos del instructor y se verifica existencia
+                curso = utilidades.cursosInstructores(instructor)
+                if not curso:
                     continue
 
-                # Muestra el listado de cursos disponibles
-                print("\n📘 Cursos disponibles:")
-                for c in cursosBaseDatos.values():
-                    print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = utilidades.comprobacion_num("codigo del curso")  # Se ingresa el código del curso donde se registrará la calificación
+                # Valida que existan evaluaciones dentro del curso
+                if not curso.getEvaluaciones():
+                    print("⚠️ No hay evaluaciones en este curso.")
+                    continue
+
+                # Enlista los estudiantes disponibles a inscribir con su ID y nombre
+                print("\n👥 Estudiantes en el curso:")
+                for e in curso.getEstudiantes().values():
+                    print(f"- {e.id} - {e.nombre}")
+
+                est_id = self.pedir_id("ID del estudiante: ") # Se pide el ingreso del ID del estudiante para su nota y lo valida
+
+                # Valida que exista el estudiante dentro del curso
+                if est_id not in curso.getEstudiantes():
+                    print("❌ Estudiante no inscrito en el curso.")
+                    continue
+
+                # Enlista las evaluaciones que están dentro del curso
+                print("\nEvaluaciones disponibles:")
+                for idx, ev in enumerate(curso.getEvaluaciones(), 1):
+                    print(f"{idx}. {ev.tipo()} {ev.nombre}")
                 
-                # Se valida que exista el curso ingresado
-                if codigo in cursosBaseDatos:
-                    curso = cursosBaseDatos[codigo] # Se asigna el curso en donde se estará trabajando
+                # Ingreso del ID de la evaluación y la nota a registrar con manejo de errores en entrada
+                try:
+                    idx = int(input("Elige evaluación: ")) - 1
+                    nota = float(input("Nota: "))
+                except ValueError:
+                    print("❌ Entrada inválida. Debe ingresar números.")
+                    continue
 
-                    # Valida que existan evaluaciones dentro del curso
-                    if not curso.getEvaluaciones():
-                        print("⚠️ No hay evaluaciones en este curso.")
-                        continue
-
-                    # Enlista los estudiantes disponibles a inscribir con su ID y nombre
-                    print("\n👥 Estudiantes en el curso:")
-                    for e in curso.getEstudiantes().values():
-                        print(f"- {e.id} - {e.nombre}")
-                    est_id = self.pedir_id("ID del estudiante: ") # Se pide el ingreso del ID del estudiante para su nota y lo valida
-
-                    # Valida que exista el estudiante dentro del curso
-                    if est_id not in curso.getEstudiantes():
-                        print("❌ Estudiante no inscrito en el curso.")
-                        continue
-
-                    # Enlista las evaluaciones que están dentro del curso
-                    print("\nEvaluaciones disponibles:")
-                    for idx, ev in enumerate(curso.getEvaluaciones(), 1):
-                        print(f"{idx}. {ev.tipo()} {ev.nombre}")
-
-                    # Ingreso del ID de la evaluación y la nota a registrar con manejo de errores en entrada
-                    try:
-                        idx = int(input("Elige evaluación: ")) - 1
-                        nota = float(input("Nota: "))
-                    except ValueError:
-                        print("❌ Entrada inválida. Debe ingresar números.")
-                        continue
-
-                    # Validación del rango de opciones de evaluación
-                    if 0 <= idx < len(curso.getEvaluaciones()):
-                        # Se obtiene la lista de evaluaciones del curso
-                        # Se selecciona la evaluación elegida por su índice
-                        # Se llama al método 'asignar_nota' de esa evaluación, registrando la nota del estudiante en esa evaluación específica
-                        curso.getEvaluaciones()[idx].asignar_nota(est_id, nota, curso.getEstudiantes())
-                        print("✅ Nota registrada.")
-                    else:
-                        print("❌ Número de evaluación inválido.")
+                # Validación del rango de opciones de evaluación
+                if 0 <= idx < len(curso.getEvaluaciones()):
+                    # Se obtiene la lista de evaluaciones del curso
+                    # Se selecciona la evaluación elegida por su índice
+                    # Se llama al método 'asignar_nota' de esa evaluación, registrando la nota del estudiante en esa evaluación específica
+                    curso.getEvaluaciones()[idx].asignar_nota(est_id, nota, curso.getEstudiantes())
+                    print("✅ Nota registrada.")
                 else:
-                    print("❌ Curso no encontrado.")
+                    print("❌ Número de evaluación inválido.")
 
             elif op == "3":  # Ver calificaciones
-                # Validar la existencia de cursos
-                if not cursosBaseDatos:
-                    print("⚠️ No hay cursos creados aún.")
-                    continue
-
-                # Muestra el listado de cursos disponibles
-                print("\n📘 Cursos disponibles:")
-                for c in cursosBaseDatos.values():
-                    print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = utilidades.comprobacion_num("codigo del curso")  # Ingreso del código del curso a ver las calificaciones
-                
-                # Verifica existencia del curso
-                if codigo in cursosBaseDatos:
-                    cursosBaseDatos[codigo].mostrar_calificaciones() # Se llama al método 'mostrar_calificaciones' del módulo 'evaluaciones'
-                else:
-                    print("❌ Curso no encontrado.")
+                # Se llama a la función dentro de utilidades para mostrar las califaciones de los cursos del instructor
+                curso = utilidades.cursosInstructores(instructor)
+                if curso:
+                    curso.mostrar_calificaciones()
 
             elif op == "4":  # Reporte de promedios bajos
-                # Validar la existencia de cursos
-                if not cursosBaseDatos:
-                    print("⚠️ No hay cursos creados aún.")
-                    continue
-
-                # Muestra el listado de cursos disponibles
-                print("\n📘 Cursos disponibles:")
-                for c in cursosBaseDatos.values():
-                    print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = utilidades.comprobacion_num("codigo del curso")  # Ingreso del código del curso
-                
-                # Verifica existencia del curso
-                if codigo in cursosBaseDatos:
-                    cursosBaseDatos[codigo].reporte_promedios_bajos() # Se llama al método 'reporte_promedios_bajos' del módulo 'evaluaciones'
-                else:
-                    print("❌ Curso no encontrado.")
+                # Se llama a la función dentro de utilidades para mostrar los reportes de los cursos del instructor
+                curso = utilidades.cursosInstructores(instructor)
+                if curso:
+                    curso.reporte_promedios_bajos()
 
             elif op=="5":       #Mostrar todos los estudiantes de algun curso
                 curso=utilidades.cursosInstructores(instructor) #Comprobar si el instructor tiene cursos a su cargo y ver el reporte de este
