@@ -30,13 +30,20 @@ class Menus:
             op = input("Opción: ") # Selección de opción
 
             if op == "1":    # Crear evaluación
-                # Se llama a la función dentro de utilidades para mostrar los cursos del instructor y se verifica
+                # Se llama a la función dentro de utilidades para mostrar los cursos del instructor
                 curso = utilidades.cursosInstructores(instructor)
+                # Verifica si tiene cursos el instructor
                 if not curso:
+                    print("❌ No existen cursos.")
                     continue
 
+                print('\n📄 Evaluaciones')
                 # Se pide el tipo, nombre y ponderación de la evaluación a crear
-                tipo = input("Tipo (examen/tarea): ").lower() 
+                tipo = input("1.Examen \n2.Tarea \nTipo: ")
+                if tipo not in ['1','2']:
+                    print("❌ Opción inválida.")
+                    continue
+
                 nombre = input("Nombre de la evaluación: ")
 
                 # Manejo de errores en entrada tipo float de 'ponderación'
@@ -47,7 +54,7 @@ class Menus:
                     continue
 
                 # Se verifica que tipo de evaluación es
-                if tipo == "examen":
+                if tipo == "1":
                     # Si es de tipo 'examen' se pide su atributo específico 
                     # Manejo de errores en entrada tipo int de 'duración'
                     try:
@@ -65,9 +72,12 @@ class Menus:
                 curso.agregar_evaluacion(evaluacion)
 
             elif op == "2":  # Registrar calificación
-                # Se llama a la función dentro de utilidades para mostrar los cursos del instructor y se verifica existencia
+
+                # Se llama a la función dentro de utilidades para mostrar los cursos del instructor
                 curso = utilidades.cursosInstructores(instructor)
+                # Verifica si tiene cursos el instructor
                 if not curso:
+                    print("❌ No existen cursos.")
                     continue
 
                 # Valida que existan evaluaciones dentro del curso
@@ -113,12 +123,14 @@ class Menus:
             elif op == "3":  # Ver calificaciones
                 # Se llama a la función dentro de utilidades para mostrar las califaciones de los cursos del instructor
                 curso = utilidades.cursosInstructores(instructor)
+                # Verifica si tiene cursos el instructor
                 if curso:
                     curso.mostrar_calificaciones()
 
             elif op == "4":  # Reporte de promedios bajos
                 # Se llama a la función dentro de utilidades para mostrar los reportes de los cursos del instructor
                 curso = utilidades.cursosInstructores(instructor)
+                # Verifica si tiene cursos el instructor
                 if curso:
                     curso.reporte_promedios_bajos()
 
@@ -238,6 +250,7 @@ class Menus:
                         utilidades.mostrar_inscritos(curso) #Se despliegan los estudiantes inscritos
 
                 else: print("Saliendo al menú principal")
+
             elif op == "0":
                 break
             else:

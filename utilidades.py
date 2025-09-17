@@ -228,7 +228,7 @@ def mostrar_inscritos(curso):
     if len(curso.getEstudiantes())==0:       #Comprobar que exista algun estudiante inscrito
         print (f"\nNo hay estudiantes incritos en el curso {curso.getNombre()} ({curso.getCodigo()})")
     else:
-        print(f"\n Estudiantes incritos al curso {curso.getNombre()} ({curso.getCodigo()})")
+        print(f"\n👥 Estudiantes incritos al curso {curso.getNombre()} ({curso.getCodigo()})")
         for clave, valor in curso.getEstudiantes().items(): #Con un for recorrer todos los estudiantes inscritos
             print(f"{clave} - {valor.resumen()}")   #Imprimir los estudiantes
     
