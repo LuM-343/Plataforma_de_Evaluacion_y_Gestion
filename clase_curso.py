@@ -41,7 +41,7 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         if estudiante.getId() in self.__estudiantes:  #Comprobar que el estudiante no este inscrito ya
             print("ERROR: El estudiante ya se encuentra inscrito en el curso")
 
-        self.__estudiantes[estudiante.getId()] = {"estudiante": estudiante, "notas": []} # Aquí se guardarán las notas de las evaluaciones}
+        self.__estudiantes[estudiante.getId()] = estudiante # Aquí se guardarán las notas de las evaluaciones}
         print("Estudiante agregado")  
 
     def eliminarEstudiante(self, estudiante):

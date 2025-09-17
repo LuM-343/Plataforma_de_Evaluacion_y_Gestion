@@ -104,17 +104,15 @@ def resumenInstructores():  #Función para mostrar todos los instructores existe
 def cursosInstructores(instructor):
     i=0
     for clave, valor in clase_curso.cursosBaseDatos.items():        #Mostrar todos los cursos disponibles
-        if valor.getInstructor==instructor:                 #Comprobar que el instructor es el mismo
+        if valor.getInstructor().getId() == instructor.getId():                 #Comprobar que el instructor es el mismo
             print(f"{clave} - {valor.resumen()}")
             i+=1
-        else: pass
     if i==0:        #Mostrar un error si no tiene asignado ningun curso
         print("ERROR: No tienes agregado ningun curso")
         return False
     else:
         curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")] #Si tiene algun curso, pedir el codigo
         return curso    #Retornar el curso
-
 
 def crearEstudiante():      #Función para crear una nueva instancia de estudiante
     print("\n---Ingresa los datos del nuevo estudiante---")     #Se piden los datos
@@ -198,15 +196,16 @@ def crearCurso():       #Función para crear curso
 
 def cambio_instructor():    #Función para cambiar el instructor de algun curso
     print("\nBienvenido al cambio de Instructor")
-    resumenCursos()       #Se llama a la función resumen cursos
-    curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")] #Ingreso del curso al que se asignará
-    instructorActual=curso.getInstructor()
-    if len(clase_usuario.instructoresBaseDatos)<2: print ("ERROR: No existen suficientes instructores") #Comprobar que ya existan cursos
-    else:
-        resumenInstructores()   #Se llama a la función para mostrar instructores disponibles
-        instructorNuevo=clase_usuario.instructoresBaseDatos[comprobacion_num("Id Instructor")]
-        if instructorActual==instructorNuevo:  print("ERROR: Debe ser un instructor diferente") #Comprobar que el instructor sea diferente
-        else: curso.setInstructor(instructorNuevo)
+    if resumenCursos()==True: #Se llama a la función resumen cursos
+        curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")] #Ingreso del curso al que se asignará
+        instructorActual=curso.getInstructor()
+        if len(clase_usuario.instructoresBaseDatos)<2: print ("ERROR: No existen suficientes instructores") #Comprobar que ya existan cursos
+        else:
+            resumenInstructores()   #Se llama a la función para mostrar instructores disponibles
+            instructorNuevo=clase_usuario.instructoresBaseDatos[comprobacion_num("Id Instructor")]
+            if instructorActual==instructorNuevo:  print("ERROR: Debe ser un instructor diferente") #Comprobar que el instructor sea diferente
+            else: curso.setInstructor(instructorNuevo)
+    else: return
 
 def agregar_estudiante(estudiante):             #Para realizar esto ya debe haverse identificado y por eso se pide a estudiantes
     print("\nBienvenido a la asignación de cursos")
@@ -239,23 +238,25 @@ def eliminarEstudiante(estudiante):    #Para realizar esto ya debe haverse ident
         if estudiante.getId() in valor.getEstudiantes():    #Se comprueba si el estudiante ya está inscrito en alguno
             print(f"{clave} - {valor.resumen()}")           
             i+=1
-    if i==0: print ("ERROR: No estás inscrito a ningun curso")   #Si no está inscrito, se lanza error
-    curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]     #Se toma el código del curso a desasignar
-    print("Te retiras del siguiente curso")
-    curso.infoCurso()       #Se muestra un resumen del curso
-    opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
-    if opcion=='si':
-        curso.eliminarEstudiante(estudiante)   #Se llama al método para eliminar el estudiante
-        print("Eliminado exitosamente")
+    if i==0: 
+        print ("ERROR: No estás inscrito a ningun curso")   #Si no está inscrito, se lanza error
         return
     else:
-        print("Saliendo al menu principal")
-        return
+        curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]     #Se toma el código del curso a desasignar
+        print("Te retiras del siguiente curso")
+        curso.infoCurso()       #Se muestra un resumen del curso
+        opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
+        if opcion=='si':
+            curso.eliminarEstudiante(estudiante)   #Se llama al método para eliminar el estudiante
+            print("Eliminado exitosamente")
+            return
+        else:
+            print("Saliendo al menu principal")
+            return
     
 def eliminarCurso():
     print("\nBienvenido a la papelera de cursos")
-    if len(clase_usuario.estudiantesBaseDatos)>0:
-        resumenCursos()       #Se llama a la función resumen Instructores
+    if resumenCursos()==True:      #Se llama a la función resumen Instructores
         curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]
         print("\nSe eliminará el siguiente curso")
         curso.infoCurso()
@@ -268,7 +269,7 @@ def eliminarCurso():
             print("Saliendo al menu principal")
             return
     else: 
-        print("ERROR: Primero debes crear un curso")
+        return
 
 def guardar_datos():
     with open("estudiantes.pkl", "wb") as f:    #Guardar el diccionario "estudiantesBaseDatos" en un archivo .pkl para no perder datos
