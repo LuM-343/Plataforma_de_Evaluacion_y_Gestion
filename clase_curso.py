@@ -10,7 +10,6 @@ class Curso:        #Clase para cursos, con nombre, aula, capacidad, codigo e in
         self.__aula=aula
         self.__codigo=codigo
         self.__instructor=instructor
-        self.__notaTotal=0      #Total de notas subidas en el curso
         self.__estudiantes={}       #Estudiantes incritros
         self.__evaluaciones = []        #Actividades realizadas
         cursosBaseDatos[self.__codigo]=self

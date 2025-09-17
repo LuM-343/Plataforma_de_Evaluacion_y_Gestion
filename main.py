@@ -2,12 +2,8 @@
 # CLASE: MENÚS
 # ==============================
 # Importación de módulos para uso de clases dentro de los menús
-import utilidades
-from clase_usuario import estudiantesBaseDatos, instructoresBaseDatos
-from clase_curso import cursosBaseDatos
 from evaluaciones import Examen, Tarea
-
-# Clase base Menus
+import utilidades
 # Clase base Menus
 class Menus:
     # Funciones auxiliares de validación de entrada de datos
@@ -18,14 +14,6 @@ class Menus:
             if entrada.isdigit():  # Valida que sean números
                 return entrada
             print("❌ El ID debe ser numérico y sin espacios.")
-
-    def pedir_nombre(self, mensaje):
-        # Pide al usuario un nombre sin números
-        while True:
-            entrada = input(mensaje).strip().title()
-            if entrada.replace(" ", "").isalpha():  # Letras y espacios permitidos
-                return entrada
-            print("❌ El nombre no debe contener números ni caracteres inválidos.")
 
     # Menú para Catedrático
     def menu_catedratico(self, instructor):  # Al iniciar sesión se comparte la instancia del usuario con el método del menu
@@ -50,7 +38,7 @@ class Menus:
                 print("\n📘 Cursos disponibles:")
                 for c in cursosBaseDatos.values():
                     print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = input("Código del curso: ") # Ingresa el código del curso 
+                codigo = utilidades.comprobacion_num("codigo del curso") # Ingresa el código del curso 
                 # Verifca el código del curso 
                 if codigo in cursosBaseDatos:
                     # Se pide el tipo, nombre y ponderación de la evaluación a crear
@@ -93,7 +81,7 @@ class Menus:
                 print("\n📘 Cursos disponibles:")
                 for c in cursosBaseDatos.values():
                     print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = input("Código del curso: ") # Se ingresa el código del curso donde se registrará la calificación
+                codigo = utilidades.comprobacion_num("codigo del curso")  # Se ingresa el código del curso donde se registrará la calificación
                 
                 # Se valida que exista el curso ingresado
                 if codigo in cursosBaseDatos:
@@ -150,7 +138,7 @@ class Menus:
                 print("\n📘 Cursos disponibles:")
                 for c in cursosBaseDatos.values():
                     print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = input("Código del curso: ") # Ingreso del código del curso a ver las calificaciones
+                codigo = utilidades.comprobacion_num("codigo del curso")  # Ingreso del código del curso a ver las calificaciones
                 
                 # Verifica existencia del curso
                 if codigo in cursosBaseDatos:
@@ -168,7 +156,7 @@ class Menus:
                 print("\n📘 Cursos disponibles:")
                 for c in cursosBaseDatos.values():
                     print(f"- {c.getCodigo()} - {c.getNombre()}")
-                codigo = input("Código del curso: ") # Ingreso del código del curso
+                codigo = utilidades.comprobacion_num("codigo del curso")  # Ingreso del código del curso
                 
                 # Verifica existencia del curso
                 if codigo in cursosBaseDatos:
@@ -325,6 +313,11 @@ class Menus:
 
 #Iniciar el menu
 if __name__ == "__main__":
-    m = Menus()
     utilidades.cargarDatos() #Función para cargar datos ya guardados
+
+    #Importar las bases de datos, hasta que ya se hayan cargado los datos
+    from clase_usuario import estudiantesBaseDatos, instructoresBaseDatos
+    from clase_curso import cursosBaseDatos
+    
+    m = Menus()
     m.menu_principal()
