@@ -87,9 +87,11 @@ def comprobacion_correo(correo):    #Función para comprobar correo
 def resumenCursos():    #Función para mostrar todoso los cursos existentes
     if len(clase_curso.cursosBaseDatos)==0:     #Comprobar que ya existan cursos
         print ("ERROR: No existen cursos disponibles")
+        return False
     else:
         for clave, valor in clase_curso.cursosBaseDatos.items():        #Mostrar todos los cursos disponibles
             print(f"{clave} - {valor.resumen()}")
+        return True
 
 def resumenInstructores():  #Función para mostrar todos los instructores existentes
     if len(clase_usuario.instructoresBaseDatos)==0:       #Comprobar que exista algun Instructor ya
@@ -99,6 +101,21 @@ def resumenInstructores():  #Función para mostrar todos los instructores existe
         for clave, valor in clase_usuario.instructoresBaseDatos.items():    #Imprimir todos ls instructores existentes
             print(f"{clave} - {valor.resumen()}")
     
+def cursosInstructores(instructor):
+    i=0
+    for clave, valor in clase_curso.cursosBaseDatos.items():        #Mostrar todos los cursos disponibles
+        if valor.getInstructor==instructor:                 #Comprobar que el instructor es el mismo
+            print(f"{clave} - {valor.resumen()}")
+            i+=1
+        else: pass
+    if i==0:        #Mostrar un error si no tiene asignado ningun curso
+        print("ERROR: No tienes agregado ningun curso")
+        return False
+    else:
+        curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")] #Si tiene algun curso, pedir el codigo
+        return curso    #Retornar el curso
+
+
 def crearEstudiante():      #Función para crear una nueva instancia de estudiante
     print("\n---Ingresa los datos del nuevo estudiante---")     #Se piden los datos
     nombre=input("Ingresa el nombre: ")         # Y se llaman a las comprobaciones necesarias
@@ -206,6 +223,14 @@ def agregar_estudiante(estudiante):             #Para realizar esto ya debe have
     else:
         print("Saliendo al menu principal")
         return
+    
+def mostrar_inscritos(curso):
+    if len(curso.getEstudiantes())==0:       #Comprobar que exista algun estudiante inscrito
+        print (f"\nNo hay estudiantes incritos en el curso {curso.getNombre()} ({curso.getCodigo()})")
+    else:
+        print(f"\n Estudiantes incritos al curso {curso.getNombre()} ({curso.getCodigo()})")
+        for clave, valor in curso.getEstudiantes().items(): #Con un for recorrer todos los estudiantes inscritos
+            print(f"{clave} - {valor.resumen()}")   #Imprimir los estudiantes
     
 def eliminarEstudiante(estudiante):    #Para realizar esto ya debe haverse identificado y por eso se pide a estudiantes
     print("\nBienvenido a la plataforma de retiro académico")

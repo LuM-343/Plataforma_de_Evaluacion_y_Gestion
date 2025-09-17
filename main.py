@@ -25,6 +25,7 @@ class Menus:
             print("2. Registrar calificación")
             print("3. Ver calificaciones")
             print("4. Reporte promedios bajos")
+            print("5. Estudiantes Inscritos")
             print("0. Salir")
             op = input("Opción: ") # Selección de opción
 
@@ -164,6 +165,11 @@ class Menus:
                 else:
                     print("❌ Curso no encontrado.")
 
+            elif op=="5":       #Mostrar todos los estudiantes de algun curso
+                curso=utilidades.cursosInstructores(instructor) #Comprobar si el instructor tiene cursos a su cargo y ver el reporte de este
+                if curso==False: pass      #Si no tiene cursos pasa
+                else: utilidades.mostrar_inscritos(curso)   #Si si los tiene, se muestra los estudiantes inscritos
+
             elif op == "0": # Opción para finalizar el menú del catedrático
                 break
             else: # Ingreso de opción fuera de rango de opciones del menú
@@ -260,6 +266,7 @@ class Menus:
                 print("2. Cambiar instructor")
                 print("3. Resumen cursos")
                 print("4. Eliminar curso")
+                print("5. Listado de Estudiante de un Curso")
                 print("0. Salir al menu principal")
                 op2=input("Opción: ")   #Se pide opción
 
@@ -267,6 +274,12 @@ class Menus:
                 elif op2=="2": utilidades.cambio_instructor()   #Se llama a la función de cambiar instructor en utilidades
                 elif op2=="3": utilidades.resumenCursos()   #Se llama a la función de resumir curso en utilidades
                 elif op2=="4": utilidades.eliminarCurso()   #Se llama a la función de eliminar curso en utilidades
+                elif op2=="5": 
+                    print("\n Bienvenido al listado general")
+                    if utilidades.resumenCursos()==True:    #Se comprueba que existan cursos 
+                        curso=cursosBaseDatos[utilidades.comprobacion_num("codigo del curso")]  #Se pide el curso y se comprueba
+                        utilidades.mostrar_inscritos(curso) #Se despliegan los estudiantes inscritos
+
                 else: print("Saliendo al menú principal")
             elif op == "0":
                 break
