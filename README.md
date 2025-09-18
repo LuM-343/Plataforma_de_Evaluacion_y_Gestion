@@ -43,36 +43,15 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
 
 ## Uso de Menú
 
-3. Menú principal
+1. Menú principal
    Al iniciar el programa, se mostrará un menú con opciones:
 
    * `1) Iniciar Sesión` → Acceso a opciones y gestiones de estudiantes e instructores segun ID 
    * `2) Portal Administrativo` → Acceso aopciones y funciones unicas de administración, se debe ingresar una contraseña por seguridad. Esta es "Trafico pesado"
    * `0) Salir` → Se sale del programa y se guardan todos los datos de la sesión
 
-     
-4. Menú Catedrático
-   Si se detecta que el ID es de instructor desde el menú principal llegarás a este menú
-   * `---Menú Catedrático (Nombre del catedrático)---`
-   * `1) Crear evaluación` → Crear evaluación de  curso del que es responsable el catedrático (Se necesita ingresar nombre, ponderacion y tiempo/fecha por cada evaluación)
-   * `2) Registrar calificación` → De las evaluaciones ya creadas en los cursos del instructor podrá asginar un punteo a cada estudiante (Se necesita tener una evaluación creada)
-   * `3) Ver calificaciones` → De los cursos a su cargo, el instructor puede ver un resumen de las calificaciones ingresadas por curso.
-   * `4) Reporte promedios bajos` → De los cursos a su cargo, el instructor puede ver un reporte de los estudiantes con bajo rendimiento, dividido por curso.
-   * `5) Estudiantes Inscritos` → De los cursos a su cargo, el instructor puede ver todos los estudiantes asignados por curso.
-   * `0) Salir` → Se cierra la sesión del catedrático y se regresa al menú principal
 
-  
-5. Menú Estudiante
-   Si se detecta que el ID es de estudiante desde el inisión de sesión, se enviará a este menú
-   * `---Menú Estudiante (Nombre del estudiante)---`
-   * `1) Asignación de cursos` → El estudiante puede asignarse a cada uno de los cursos creados, siempre y cuando no haya superado su capacidad, solo debe ingresar el código del curso.
-   * `2) Retiro académico` → Se le da la oportunidad al estudiante de retirarse de los cursos a los que ya esta inscrito, solo debe ingresar el código de este curso.
-   * `3) Ver cursos inscritos` → Se despliega un resumen de todos los cursos de los que forma parte el estudiante
-   * `4) Ver calificaciones` → Puede ver la calificación ingresada por el profesor y un promedio del curso, esto por cada curso de los que forma parte el estudiante.
-   * `0) Salir` → Se cierra la sesión del estudiante y se regresa al menú principal
-
-  
-6. Menú Administrarivo
+2. Menú Administrarivo
    Si se coloca la contraseña correcta en la opción 2 del menú principal es dirigido a este menú.
    * `---Menú Administrativo---`
    * `1) Estudiante` → Administración de estudiantes
@@ -92,5 +71,26 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
       * `5) Listado de Estudiantes de un Curso` → Se muestran todos los estudiantes asignados a un curso (se necesita el código del curso a ver).
       * `0) Salir al menú principal` → Se regresa al menú administrativo
    * `0) Salir` → Se cierra la sesión administrativa y se regresa al menú principal
+
+     
+3. Menú Catedrático
+   Si se detecta que el ID es de instructor desde el menú principal llegarás a este menú
+   * `---Menú Catedrático (Nombre del catedrático)---`
+   * `1) Crear evaluación` → Crear evaluación de  curso del que es responsable el catedrático (Se necesita ingresar nombre, ponderacion y tiempo/fecha por cada evaluación)
+   * `2) Registrar calificación` → De las evaluaciones ya creadas en los cursos del instructor podrá asginar un punteo a cada estudiante (Se necesita tener una evaluación creada)
+   * `3) Ver calificaciones` → De los cursos a su cargo, el instructor puede ver un resumen de las calificaciones ingresadas por curso.
+   * `4) Reporte promedios bajos` → De los cursos a su cargo, el instructor puede ver un reporte de los estudiantes con bajo rendimiento, dividido por curso.
+   * `5) Estudiantes Inscritos` → De los cursos a su cargo, el instructor puede ver todos los estudiantes asignados por curso.
+   * `0) Salir` → Se cierra la sesión del catedrático y se regresa al menú principal
+
+  
+4. Menú Estudiante
+   Si se detecta que el ID es de estudiante desde el inisión de sesión, se enviará a este menú
+   * `---Menú Estudiante (Nombre del estudiante)---`
+   * `1) Asignación de cursos` → El estudiante puede asignarse a cada uno de los cursos creados, siempre y cuando no haya superado su capacidad, solo debe ingresar el código del curso.
+   * `2) Retiro académico` → Se le da la oportunidad al estudiante de retirarse de los cursos a los que ya esta inscrito, solo debe ingresar el código de este curso.
+   * `3) Ver cursos inscritos` → Se despliega un resumen de todos los cursos de los que forma parte el estudiante
+   * `4) Ver calificaciones` → Puede ver la calificación ingresada por el profesor y un promedio del curso, esto por cada curso de los que forma parte el estudiante.
+   * `0) Salir` → Se cierra la sesión del estudiante y se regresa al menú principal
 
 
