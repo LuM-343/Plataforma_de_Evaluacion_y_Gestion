@@ -40,7 +40,7 @@ def reporte_promedios_bajos(curso, limite=60): # Compara el límite de 60 puntos
         prom = curso.promedio_estudiante(id_est) # Se calcula el promedio ponderado en base a sus evaluaciones
         # Si el promedio existe y es menor al límite (60) se crea reporte
         if prom is not None and prom < limite:
-            print(f"  ⚠️ {est.nombre}: {prom:.2f}")
+            print(f"  ⚠️ {est.getNombre()}: {prom:.2f}")
             encontrado = True
     # Si no se encuentran estudiantes con promedios bajos no crea el reporte
     if not encontrado:
