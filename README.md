@@ -7,7 +7,7 @@
 
 ## Descripción
 
-En este proyecto se desarrollo un sistema capaz de gestionar evaluaciones de cursos online, integrando accesos de instructores, estudiantes y administración. 
+En este proyecto se desarrolló un sistema capaz de gestionar evaluaciones de cursos online, integrando accesos de instructores, estudiantes y administración. 
 En el que cada uno puede realizar diferentes gestiones, se busco crear un proyecto robusto que no tan fácil falle y que llegué a ser amigable con los usuarios.
 
 
@@ -47,7 +47,7 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
    Al iniciar el programa, se mostrará un menú con opciones:
 
    * `1) Iniciar Sesión` → Acceso a opciones y gestiones de estudiantes e instructores segun ID 
-   * `2) Portal Administrativo` → Acceso aopciones y funciones unicas de administración, se debe ingresar una contraseña por seguridad. Esta es "Trafico pesado"
+   * `2) Portal Administrativo` → Acceso a opciones y funciones unicas de administración, se debe ingresar una contraseña por seguridad. Esta es "Trafico pesado"
    * `0) Salir` → Se sale del programa y se guardan todos los datos de la sesión
 
 
@@ -63,6 +63,7 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
       * `1) Agregar Instructores` → Agregar un nuevo instructor al sistema (se necesita el id, nombre, edad, correo, profesión del nuevo instructor)
       * `2) Resumen de Instructores` → Se despliega un resumen de todos los instructores existentes.
       * `0) Salir al menú principal` → Se regresa al menú administrativo
+        
    * `3) Cursos` → Administración de cursos
       * `1) Agregar curso` → Agregar un nuevo curso al sistema (se necesita el código, nombre, capacidad, aula e instructor del nuevo curso)
       * `2) Cambiar Instructor` → Se puede cambiar el instructor de un curso (se necesita código del curso y id del nuevo instructor)
@@ -76,8 +77,8 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
 3. Menú Catedrático
    Si se detecta que el ID es de instructor desde el menú principal llegarás a este menú
    * `---Menú Catedrático (Nombre del catedrático)---`
-   * `1) Crear evaluación` → Crear evaluación de  curso del que es responsable el catedrático (Se necesita ingresar nombre, ponderacion y tiempo/fecha por cada evaluación)
-   * `2) Registrar calificación` → De las evaluaciones ya creadas en los cursos del instructor podrá asginar un punteo a cada estudiante (Se necesita tener una evaluación creada)
+   * `1) Crear evaluación` → Crear evaluación de curso del que es responsable el catedrático (Se necesita ingresar nombre, ponderacion y tiempo/fecha por cada evaluación)
+   * `2) Registrar calificación` → De las evaluaciones ya creadas en los cursos del instructor, podrá asiginar un punteo a cada estudiante (Se necesita tener una evaluación creada)
    * `3) Ver calificaciones` → De los cursos a su cargo, el instructor puede ver un resumen de las calificaciones ingresadas por curso.
    * `4) Reporte promedios bajos` → De los cursos a su cargo, el instructor puede ver un reporte de los estudiantes con bajo rendimiento, dividido por curso.
    * `5) Estudiantes Inscritos` → De los cursos a su cargo, el instructor puede ver todos los estudiantes asignados por curso.
@@ -96,7 +97,9 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
 
 ## Advertencias
 Para la persistencia de datos entre sesiones se uso el módulo pickle, guarda los datos en archivos .pkl
-No alarmarse si después del primer uso en la carte donde se encuentra la plataforma se crea una carpeta de cahe y los siguientes archivos: 
+
+
+No alarmarse si después del primer uso en la parte donde se encuentra la plataforma se crea una carpeta de cache y los siguientes archivos: 
 ```
    cursosBaseDatos.pkl
    estudiantesBaseDatos.pkl
@@ -107,5 +110,6 @@ Si quiere iniciar un sistema desde cero copie la carpeta y elimine estos archivo
 Los archivos .pkl no se pueden leer fuera de python
 
 ¡¡¡NO ABRIR ARCHIVOS .PKL de fuentes desconocidas!!!
+
 
 
