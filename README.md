@@ -41,6 +41,7 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
    python main.py
    ```
 
+## Uso de Menú
 
 3. Menú principal
    Al iniciar el programa, se mostrará un menú con opciones:
@@ -91,4 +92,5 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
       * `5) Listado de Estudiantes de un Curso` → Se muestran todos los estudiantes asignados a un curso (se necesita el código del curso a ver).
       * `0) Salir al menú principal` → Se regresa al menú administrativo
    * `0) Salir` → Se cierra la sesión administrativa y se regresa al menú principal
+
 
