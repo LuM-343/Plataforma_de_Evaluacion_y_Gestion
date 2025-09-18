@@ -103,6 +103,9 @@ No alarmarse si después del primer uso en la carte donde se encuentra la plataf
    instructoresBaseDatospkl
  ```
 Si quiere iniciar un sistema desde cero copie la carpeta y elimine estos archivos.
+
 Los archivos .pkl no se pueden leer fuera de python
+
 ¡¡¡NO ABRIR ARCHIVOS .PKL de fuentes desconocidas!!!
+
 
