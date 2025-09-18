@@ -215,7 +215,7 @@ def agregar_estudiante(estudiante):             #Para realizar esto ya debe have
     
     print("Te asignaras al siguiente curso")        #Mostrar resumen del curso al que se asignará
     curso.infoCurso()
-    opcion=input("Escribe 'si' para confirmarlo u otra tecla para salir: ")       #Confirmación
+    opcion=input("Escribe 'si' para confirmarlo u otra tecla para salir: ").strip().lower()       #Confirmación
     if opcion=='si':
         curso.agregarEstudiante(estudiante) #Se llama al método para agregar al estudiante
         print("Agregado exitosamente")
@@ -246,7 +246,7 @@ def eliminarEstudiante(estudiante):    #Para realizar esto ya debe haverse ident
         curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]     #Se toma el código del curso a desasignar
         print("Te retiras del siguiente curso")
         curso.infoCurso()       #Se muestra un resumen del curso
-        opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
+        opcion=input("Escribe 'si' para confirmarlo u otra tecla para salir: ").strip().lower()       #Se confirma
         if opcion=='si':
             curso.eliminarEstudiante(estudiante)   #Se llama al método para eliminar el estudiante
             print("Eliminado exitosamente")
@@ -261,7 +261,7 @@ def eliminarCurso():
         curso=clase_curso.cursosBaseDatos[comprobacion_num("codigo del curso")]
         print("\nSe eliminará el siguiente curso")
         curso.infoCurso()
-        opcion=input("Escribe 'si' para confirmarlo o 'no' para salir: ")       #Se confirma
+        opcion=input("Escribe 'si' para confirmarlo u otra tecla para salir: ").strip().lower()       #Se confirma
         if opcion=='si':
             del clase_curso.cursosBaseDatos[curso.getCodigo()]
             print("\nCurso eliminado del sistema 🤖")   #Se elimina el curso de la base de datos
