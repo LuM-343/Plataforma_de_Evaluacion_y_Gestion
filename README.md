@@ -98,10 +98,11 @@ El trabajo se organizó con roles de equipo para fomentar la colaboración, el u
 Para la persistencia de datos entre sesiones se uso el módulo pickle, guarda los datos en archivos .pkl
 No alarmarse si después del primer uso en la carte donde se encuentra la plataforma se crea una carpeta de cahe y los siguientes archivos: 
 ```
-   cursoBaseDatos.pkl
+   cursosBaseDatos.pkl
    estudiantesBaseDatos.pkl
    instructoresBaseDatospkl
  ```
 Si quiere iniciar un sistema desde cero copie la carpeta y elimine estos archivos.
 Los archivos .pkl no se pueden leer fuera de python
 ¡¡¡NO ABRIR ARCHIVOS .PKL de fuentes desconocidas!!!
+
